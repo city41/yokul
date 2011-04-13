@@ -34,3 +34,10 @@ TokenizerTest.prototype.testTokenizesCorrectly = function() {
 
 	assertFalse("Should not return true on moveNext, as there should be no more tokens", t.moveNext());
 };
+
+TokenizerTest.prototype.testThrowsErrorIfEncountersBadToken = function() {
+	assertException("Should have thrown an exception as this input contains a bad token", function() {
+		new SMARTYCHART.Tokenizer(URL_ROOT + "?chbh=a&chs=200x100&foo");
+	});
+
+};	

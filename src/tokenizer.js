@@ -27,6 +27,7 @@ SMARTYCHART.Tokenizer.prototype._tokenize = function Tokenizer_tokenize(input) {
 	for(var i = 0; i < params.length; ++i) {
 		var param = params[i];
 		var split = param.split('=');
+
 		if(split.length !== 2) {
 			throw new Error("Tokenizer: encountered unexpected input: " + param);
 		}
