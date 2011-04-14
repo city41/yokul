@@ -1,5 +1,5 @@
 
-//http://chart.apis.google.com/chart?chbh=a&chs=200x100&cht=bvs&chd=s:SYf&chtt=testing
+//http://chart.apis.google.com/chart?chbh=a&chs=200x100&cht=bvs&chd=t:_30,-30,50,80,200&chtt=testing
 <img class="charts" data-src="http://chart.apis.google.com/chart?chbh=a&chs=200x100&cht=bvs&chd=s:SYf&chtt=testing" />
 
 chbh = bar width and spacing
