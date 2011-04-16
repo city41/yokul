@@ -3,13 +3,48 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Yokul Sandbox</title>
+		<style>
+			.debug-msg {
+				margin-top: 4px;
+				margin-bottom: 4px;
+				background-color: #dedede;
+			}
+
+			.debug-header {
+				padding: 3px;
+				text-align: right;
+				width: 80px;
+				display: inline-block;
+				margin-right: 10px;
+			}
+
+			.info {
+				background-color: gray;
+			}
+
+			.error {
+				background-color: red;
+				color: white;
+				font-weight: bold;
+			}
+
+			.warning {
+				background-color: #FFCC00;
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="myQueryString">https://chart.googleapis.com/chart?&chds=-1.3,1.4&cht=bvg&chs=900x200&chd=t:-0.8,0.8,-0.6|-1.2,1,-0.3|-0.4,1.3,-0.1|-0.1,-0.4,-0.6|-0.3,-0.4,0|0.4,-1.2,0.4|-0.4,-0.4,0.4&chco=8e2323,cd3333,fbb917,c38ec7,82cafa,d9d919,777733&chbh=27,0,31&chxt=x&chxl=0:|Offensive%20Efficiency|Defensive%20Efficiency|Pace&chdl=4th%20Game%20in%205%20Days|3rd%20Game%20in%204%20Days%20(Played%20Yesterday)|2nd%20Game%20of%20Back-to-Back%20Set|3rd%20Game%20in%204%20Days%20(Rested%20Yesterday)|1%20Day%20Rested|2%20Days%20Rested|Rested%20at%20Least%203%20Days&chm=N,000000,0,-1,10|N,000000,1,-1,10|N,000000,2,-1,10|N,000000,3,-1,10|N,000000,4,-1,10|N,000000,5,-1,10|N,000000,6,-1,10&chtt=The+Impact+Of+Rest+Days+On+Team+Efficiency+And+Pace</div>
+
 		<h1>Google Chart</h1>
-		<img src="http://chart.apis.google.com/chart?chbh=a&chs=200x100&cht=bvs&chd=t:30,-30,50,80,200" />
+		<img id="myGoogleChart" />
+
 
 		<h1>Replacement Yokul Chart</h1>
-		<img id="chartme" data-src="http://chart.apis.google.com/chart?chbh=a&chs=200x100&cht=bvs&chd=t:30,-30,50,80,200" />
+		<img id="myYokulChart" />
+
+		<div id="debugOutputDiv"></div>
 	</body>
 	<script type="text/javascript" src="../src/yokul.js"></script>
 	<script type="text/javascript" src="../src/chartTypes.js"></script>
@@ -17,7 +52,14 @@
 	<script type="text/javascript" src="../src/parser.js"></script>
 	<script type="text/javascript" src="../src/chart.js"></script>
 	<script type="text/javascript">
-		var chart = new YOKUL.Chart("chartme");
+		window.onload = function() {
+			YOKUL.debugOutput = "debugOutputDiv";
+			var query = document.getElementById("myQueryString").textContent;
+			var googleImg = document.getElementById("myGoogleChart");
+			googleImg.src = query;
+
+			var chart = YOKUL.createChart("myYokulChart", query);
+		};
 	</script>
 </html>
 

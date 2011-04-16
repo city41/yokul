@@ -1,13 +1,15 @@
-YOKUL.Chart = function Chart(id) {
+YOKUL.VerticalBarStacked = function VerticalBarStacked(id, queryData) {
 	var element = document.getElementById(id);
 
-	if(element && element.dataset["src"]) {
-		var image = this._createChartImage(element.dataset["src"]);
-		element.src = image;
+	if(typeof queryData === 'undefined') {
+		queryData = YOKUL.utility.getQueryDataFromElement(element);
 	}
+
+	var imageData = this._createChartImage(queryData);
+	element.src = imageData;
 };
 
-YOKUL.Chart.prototype._createBars = function Chart_createBars(context, data) {
+YOKUL.VerticalBarStacked.prototype._createBars = function VerticalBarStacked_createBars(context, data) {
 	context.save();
 	context.fillStyle = "#ffcc33";
 
@@ -22,7 +24,7 @@ YOKUL.Chart.prototype._createBars = function Chart_createBars(context, data) {
 	context.restore();
 };
 
-YOKUL.Chart.prototype._createAxis = function Chart_createAxis(context) {
+YOKUL.VerticalBarStacked.prototype._createAxis = function VerticalBarStacked_createAxis(context) {
 	context.save();
 
 	context.strokeStyle = "#afafaf";
@@ -38,7 +40,7 @@ YOKUL.Chart.prototype._createAxis = function Chart_createAxis(context) {
 };
 
 
-YOKUL.Chart.prototype._createChartImage = function Chart_createChartImage(src) {
+YOKUL.VerticalBarStacked.prototype._createChartImage = function VerticalBarStacked_createChartImage(src) {
 	var parser = new YOKUL.Parser(src);
 
 	var canvas = document.createElement('canvas');

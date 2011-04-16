@@ -6,10 +6,10 @@ YOKUL.Tokenizer = function Tokenizer(rawString) {
 	}
 	
 	// move past the server and /chart if it exists, just grab the query data
-	var match = /^[^?]+\?([a-zA-Z0-9=:&,_\-]+$)/.exec(rawString);
+	var match = /^[^?]+\?(.+)$/.exec(rawString);
 
 	if(!match || match.length !== 2) {
-		throw new Error("Tokenizer: found no valid query input in the raw string");
+		throw new Error("Tokenizer: found no valid query input in the raw string: " + rawString);
 	}
 
 	this._inputString = match[1];
@@ -25,11 +25,16 @@ YOKUL.Tokenizer.prototype._tokenize = function Tokenizer_tokenize(input) {
 	var params = input.split("&");
 
 	for(var i = 0; i < params.length; ++i) {
-		var param = params[i];
+		var param = params[i]
+
+		if(!param || param.length === 0 || param.match(/^[ \t]$/)) {
+			continue;
+		}
+
 		var split = param.split('=');
 
 		if(split.length !== 2) {
-			throw new Error("Tokenizer: encountered unexpected input: " + param);
+			throw new Error("Tokenizer: encountered unexpected input: %%" + param + "%%");
 		}
 		this._tokens.push({key: split[0], value: split[1]});
 	}
