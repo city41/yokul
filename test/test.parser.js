@@ -32,12 +32,21 @@ ParserTest.prototype.testParsesChttCorrectly = function() {
 
 ParserTest.prototype.testParsesChbhWithACorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a");
-	assertEquals("chbh not parsed correctly", YOKUL.chartTypes.bar.specific.automaticSpacing, p.chartSpacing());
+	assertEquals("chbh not parsed correctly", { 
+		barWidth: YOKUL.chartTypes.bar.specific.automaticFitBarWidth, 
+		betweenBars: YOKUL.chartTypes.bar.defaults.betweenBarWidth,
+		betweenGroups: YOKUL.chartTypes.bar.defaults.betweenGroupWidth
+	}, p.chartSpacing()); 
 };
 
 ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=12,4,30");
 	assertEquals("chbh not parsed correctly", { barWidth: 12, betweenBars: 4, betweenGroups: 30 }, p.chartSpacing());
+};
+
+ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a,4,30");
+	assertEquals("chbh not parsed correctly", { barWidth: YOKUL.chartTypes.bar.specific.automaticFitBarWidth, betweenBars: 4, betweenGroups: 30 }, p.chartSpacing());
 };
 
 ParserTest.prototype.testParsesChdsCorrectly = function() {

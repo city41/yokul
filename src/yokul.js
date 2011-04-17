@@ -47,7 +47,7 @@ YOKUL.utility = {
 
 YOKUL.log = (function() {
 	function _log(header, msg) {
-		if(YOKUL.logOutput[header]) {
+		if(YOKUL.logOutput && YOKUL.logOutput[header]) {
 			var debugOutput = YOKUL.debugOutput && document.getElementById(YOKUL.debugOutput);
 			if(!debugOutput) {
 				console.log(header + msg);

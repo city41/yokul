@@ -3,12 +3,12 @@ YOKUL.chartTypes = {
 		verticalStacked : 'bvs',
 		verticalGrouped : 'bvg',
 		specific : {
-			automaticSpacing : { barWidth: 23, betweenBars: 4, betweenGroups: 4 }
+			automaticFitBarWidth: "automaticFitBarWidth",
 		},
 		defaults: {
 			barWidth: 23,
-			betweenBarWidth: 0,
-			betweenGroupWidth: 0
+			betweenBarWidth: 4,
+			betweenGroupWidth: 4
 		}
 	}
 };

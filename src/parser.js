@@ -75,16 +75,17 @@ YOKUL.Parser = (function() {
 
 		chbh: function Parser_chbh(value) {
 			try {
-				if(value === 'a') {
-					this._chartSpacing = YOKUL.chartTypes.bar.specific.automaticSpacing;
+				var split = value.split(',');
+				var barWidth = null;
+				if(split && split[0] && split[0] === 'a') {
+					barWidth = YOKUL.chartTypes.bar.specific.automaticFitBarWidth;
 				} else {
-					var split = value.split(',');
-					var barWidth = (split.length > 0 && parseInt(split[0], 10)) || YOKUL.chartTypes.bar.defaults.barWidth;
-					var betweenBars = (split.length > 1 && parseInt(split[1], 10)) || YOKUL.chartTypes.bar.defaults.betweenBarWidth;
-					var betweenGroups = (split.length > 2 && parseInt(split[2], 10)) || YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
-
-					this._chartSpacing = { barWidth: barWidth, betweenBars: betweenBars, betweenGroups: betweenGroups };
+					barWidth = (split.length > 0 && parseInt(split[0], 10)) || YOKUL.chartTypes.bar.defaults.barWidth;
 				}
+				var betweenBars = (split.length > 1 && parseInt(split[1], 10)) || YOKUL.chartTypes.bar.defaults.betweenBarWidth;
+				var betweenGroups = (split.length > 2 && parseInt(split[2], 10)) || YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
+
+				this._chartSpacing = { barWidth: barWidth, betweenBars: betweenBars, betweenGroups: betweenGroups };
 			} catch(err) {
 				throw new Error("Unexpected error parsing chbh: " + err.toString());
 			}
