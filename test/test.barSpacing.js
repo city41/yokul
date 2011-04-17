@@ -7,6 +7,13 @@ BarSpacingTest.prototype.testConstructBarSpacingWithNoValues = function() {
 	assertEquals("betweenGroups unexpected value", YOKUL.chartTypes.bar.defaults.betweenGroupWidth, b.getBetweenGroups());
 };
 
+BarSpacingTest.prototype.testConstructWithZeroSpacings = function() {
+	var b = new YOKUL.BarSpacing(4, 0, 0);
+	assertEquals("getBarWidth didn't return expected default value", 4, b.getBarWidth());
+	assertEquals("betweenBars unexpected value", 0, b.getBetweenBars());
+	assertEquals("betweenGroups unexpected value", 0, b.getBetweenGroups());
+};
+
 BarSpacingTest.prototype.testConstructsBarSpacingWithOnlyBarWidthSpecified = function() {
 	var barWidth = 244
 	var b = new YOKUL.BarSpacing(barWidth);

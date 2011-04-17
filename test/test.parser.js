@@ -32,21 +32,30 @@ ParserTest.prototype.testParsesChttCorrectly = function() {
 
 ParserTest.prototype.testParsesChbhWithACorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a");
-	assertEquals("chbh not parsed correctly", { 
-		barWidth: YOKUL.chartTypes.bar.specific.automaticFitBarWidth, 
-		betweenBars: YOKUL.chartTypes.bar.defaults.betweenBarWidth,
-		betweenGroups: YOKUL.chartTypes.bar.defaults.betweenGroupWidth
-	}, p.chartSpacing()); 
+	assertTrue("should report its using automatic width", p.chartSpacing().isAutomaticBarWidth());
+	assertEquals("between bar width not expected default", YOKUL.chartTypes.bar.defaults.betweenBarWidth, p.chartSpacing().getBetweenBars());
+	assertEquals("between group width not expected default", YOKUL.chartTypes.bar.defaults.betweenGroupWidth, p.chartSpacing().getBetweenGroups());
 };
 
 ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=12,4,30");
-	assertEquals("chbh not parsed correctly", { barWidth: 12, betweenBars: 4, betweenGroups: 30 }, p.chartSpacing());
+	assertEquals("chbh not parsed correctly", 12, p.chartSpacing().getBarWidth());
+	assertEquals("chbh not parsed correctly", 4, p.chartSpacing().getBetweenBars());
+	assertEquals("chbh not parsed correctly", 30, p.chartSpacing().getBetweenGroups());
 };
 
 ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a,4,30");
-	assertEquals("chbh not parsed correctly", { barWidth: YOKUL.chartTypes.bar.specific.automaticFitBarWidth, betweenBars: 4, betweenGroups: 30 }, p.chartSpacing());
+	assertTrue("should report its using automatic width", p.chartSpacing().isAutomaticBarWidth());
+	assertEquals("between bar width not expected default", 4, p.chartSpacing().getBetweenBars());
+	assertEquals("between group width not expected default", 30, p.chartSpacing().getBetweenGroups());
+};
+
+ParserTest.prototype.testParsesChbhWithZeroValuesCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a,0,30");
+	assertTrue("should report its using automatic width", p.chartSpacing().isAutomaticBarWidth());
+	assertEquals("between bar width not expected default", 0, p.chartSpacing().getBetweenBars());
+	assertEquals("between group width not expected default", 30, p.chartSpacing().getBetweenGroups());
 };
 
 ParserTest.prototype.testParsesChdsCorrectly = function() {

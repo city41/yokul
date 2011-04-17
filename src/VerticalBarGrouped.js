@@ -1,32 +1,3 @@
-YOKUL.BarSpacing = function BarSpacing(barWidth, betweenBars, betweenGroups) {
-	this._barWidth = barWidth || YOKUL.chartTypes.bar.defaults.barWidth;
-	this._betweenBars = betweenBars || YOKUL.chartTypes.bar.defaults.betweenBarWidth;
-	this._betweenGroups = betweenGroups || YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
-};
-
-YOKUL.BarSpacing.prototype.getBarWidth = function BarSpacing_getBarWidth(numBars, numGroups, availableWidth) {
-	if(this._barWidth !== 'a') {
-		return this._barWidth;
-	} else {	
-		if(typeof numBars === 'undefined' || typeof availableWidth === 'undefined') {
-			throw new Error("BarSpacing.getBarWidth: barWidth is set to automatic, so please provude numBars and availableWidth parameters");
-		}
-		return expectedWidth = (availableWidth - (this._betweenBars * numBars) - (this._betweenGroups * numGroups)) / numBars;
-	}
-};
-
-YOKUL.BarSpacing.prototype.getBetweenBars = function BarSpacing_getBetweenBars() {
-	return this._betweenBars;
-};
-
-YOKUL.BarSpacing.prototype.getBetweenGroups = function BarSpacing_getBetweenGroups() {
-	return this._betweenGroups;
-};
-
-YOKUL.BarSpacing.prototype.isAutomaticBarWidth = function BarSpacing_isAutomaticBarWidth() {
-	return this._barWidth === 'a';
-};
-
 
 YOKUL.VerticalBarGrouped = function VerticalBarGrouped(id, queryData) {
 	var element = document.getElementById(id);
@@ -42,13 +13,17 @@ YOKUL.VerticalBarGrouped = function VerticalBarGrouped(id, queryData) {
 
 YOKUL.VerticalBarGrouped.prototype._getChartAreaWidth = function vbs_getChartAreaWidth(parser) {
 	var chartSpacing = parser.chartSpacing();
+
+	if(chartSpacing.isAutomaticBarWidth()) {
+		return parser.size().w;
+	}
 	
 	var areaWidth = 0;
 
 	var data = parser.chartData();
 
-	areaWidth += data[0].length * (chartSpacing.barWidth + chartSpacing.betweenBars) * data.length - chartSpacing.betweenBars;
-	areaWidth += data[0].length * chartSpacing.betweenGroups;
+	areaWidth += data[0].length * (chartSpacing.getBarWidth() + chartSpacing.getBetweenBars()) * data.length - chartSpacing.getBetweenBars();
+	areaWidth += data[0].length * chartSpacing.getBetweenGroups();
 
 	return areaWidth;
 };
@@ -137,7 +112,8 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbs_drawChartArea(c
 
 	var areaHeight = measurement.h;
 
-	var currentX = measurement.x + chartSpacing.betweenGroups / 2;
+	var currentX = measurement.x + chartSpacing.getBetweenGroups() / 2;
+	var barWidth = chartSpacing.getBarWidth(data.length * data[0].length, data.length, measurement.w);
 
 	//-0.8,0.8,-0.6|-1.2,1,-0.3|-0.4,1.3,-0.1|-0.1,-0.4,-0.6|-0.3,-0.4,0|0.4,-1.2,0.4|-0.4,-0.4,0.4
 	for(var g = 0; g < data[0].length; ++g) {
@@ -156,14 +132,14 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbs_drawChartArea(c
 
 			context.save();
 			context.fillStyle = seriesColors[i];
-			context.fillRect(currentX, barY, chartSpacing.barWidth, barHeight);
+			context.fillRect(currentX, barY, barWidth, barHeight);
 			context.restore();
-			currentX += chartSpacing.barWidth;
+			currentX += barWidth;
 			if(i < data.length - 1) {
-				currentX += chartSpacing.betweenBars;
+				currentX += chartSpacing.getBetweenBars();
 			}
 		}
-		currentX += chartSpacing.betweenGroups;
+		currentX += chartSpacing.getBetweenGroups();
 	}
 
 

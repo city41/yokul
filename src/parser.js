@@ -74,21 +74,44 @@ YOKUL.Parser = (function() {
 		},
 
 		chbh: function Parser_chbh(value) {
-			try {
-				var split = value.split(',');
-				var barWidth = null;
-				if(split && split[0] && split[0] === 'a') {
-					barWidth = YOKUL.chartTypes.bar.specific.automaticFitBarWidth;
-				} else {
-					barWidth = (split.length > 0 && parseInt(split[0], 10)) || YOKUL.chartTypes.bar.defaults.barWidth;
-				}
-				var betweenBars = (split.length > 1 && parseInt(split[1], 10)) || YOKUL.chartTypes.bar.defaults.betweenBarWidth;
-				var betweenGroups = (split.length > 2 && parseInt(split[2], 10)) || YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
+			var barWidth, betweenBars, betweenGroups;
+			var split = value.split(',');
 
-				this._chartSpacing = { barWidth: barWidth, betweenBars: betweenBars, betweenGroups: betweenGroups };
-			} catch(err) {
-				throw new Error("Unexpected error parsing chbh: " + err.toString());
+			// bar width
+			if(split.length > 0) {
+				if(split[0] === 'a') {
+					barWidth = 'a';
+				} else {
+					barWidth = parseInt(split[0], 10);
+					if(isNaN(barWidth)) {
+						barWidth = YOKUL.chartTypes.bar.defaults.barWidth;
+					}
+				}
+			} else {
+				barWidth = YOKUL.chartTypes.bar.defaults.barWidth;
 			}
+
+			// betweenBars
+			if(split.length > 1) {
+				betweenBars = parseInt(split[1], 10);
+				if(isNaN(betweenBars)) {
+					betweenBars = YOKUL.chartTypes.bar.defaults.betweenBarWidth;
+				}
+			} else {
+				betweenBars = YOKUL.chartTypes.bar.defaults.betweenBarWidth;
+			}
+
+			// betweenGroups
+			if(split.length > 2) {
+				betweenGroups = parseInt(split[2], 10);
+				if(isNaN(betweenGroups)) {
+					betweenGroups = YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
+				}
+			} else {
+				betweenGroups = YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
+			}
+
+			this._chartSpacing = new YOKUL.BarSpacing(barWidth, betweenBars, betweenGroups);
 		},
 
 		chco: function Parser_chco(value) {
