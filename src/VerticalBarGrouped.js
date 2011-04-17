@@ -29,7 +29,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbs_measureChart
 	var measure = { x: 0, y: 0, w: chartAreaWidth, h: parser.size().h };
 
 	// title
-	var titleMeasure = parser.title() ? 12 : 0;
+	var titleMeasure = parser.title() ? YOKUL.defaults.titleHeight : 0;
 	measure.y += titleMeasure;
 	measure.h -= titleMeasure;
 
@@ -38,7 +38,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbs_measureChart
 	var visibleAxes = parser.visibleAxes();
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'x') {
-			bottomAxisHeight += 12;
+			bottomAxisHeight += YOKUL.defaults.axisLabelHeight;
 		}
 	}
 
@@ -124,11 +124,24 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbs_drawAxisLabels
 	var curAxisIndex = 0;
 
 	function drawLabel(index, labels) {
+		var labelHeight = YOKUL.defaults.axisLabelHeight;
 		var widthPerLabel = measurement.w / labels.length;
 		var curX = widthPerLabel / 2;
-		var curY = measurement.y + measurement.h + (12 * (index + 1));
+		var curY = measurement.y + measurement.h + (labelHeight * (index + 1));
+
+		context.strokeStyle = "Gray";
+		context.fillStyle = YOKUL.defaults.axisLabelColor;
+		context.font = YOKUL.defaults.axisLabelFont;
 
 		for(var l = 0; l < labels.length; ++l) {
+			if(index === 0) {
+				context.beginPath();
+				context.moveTo(curX, curY - (labelHeight - 4));
+				context.lineTo(curX, curY - (labelHeight + 1));
+				context.closePath();
+				context.stroke();
+			}
+
 			var labelWidth = context.measureText(labels[l]).width;
 			context.fillText(labels[l], curX - labelWidth / 2, curY);
 			curX += widthPerLabel;
@@ -144,13 +157,13 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbs_drawAxisLabels
 
 YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbs_drawTitle(context, measurement, parser) {
 	var title = parser.title();
-	YOKUL.log.info('title: ' + title);
-
-	var center = measurement.x + measurement.w / 2;
 
 	if(title) {
+		context.font = YOKUL.defaults.titleFont;
+		context.fillStyle = YOKUL.defaults.titleColor;
+		var center = measurement.x + measurement.w / 2;
 		var measured = context.measureText(title);
-		context.fillText(title, center - measured.width / 2, 12);
+		context.fillText(title, center - measured.width / 2, YOKUL.defaults.titleHeight / 2);
 	}
 };
 

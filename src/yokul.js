@@ -1,8 +1,7 @@
 YOKUL = {
 	createChart: function(imgId, query) {
 		return new YOKUL.VerticalBarGrouped(imgId, query);
-	},
-	debugOutput : null
+	}
 };
 
 YOKUL.useContext = function YOKUL_useContext(context, callback) {
@@ -19,14 +18,16 @@ YOKUL.utility = {
 
 YOKUL.log = (function() {
 	function _log(header, msg) {
-		var debugOutput = YOKUL.debugOutput && document.getElementById(YOKUL.debugOutput);
-		if(!debugOutput) {
-			console.log(header + msg);
-		} else {
-			var div = document.createElement('div');
-			div.className = 'debug-msg';
-			div.innerHTML = "<span class='debug-header " + header + "'>" + header + "</span>" + msg + "</span>";
-			debugOutput.appendChild(div);
+		if(YOKUL.logOutput[header]) {
+			var debugOutput = YOKUL.debugOutput && document.getElementById(YOKUL.debugOutput);
+			if(!debugOutput) {
+				console.log(header + msg);
+			} else {
+				var div = document.createElement('div');
+				div.className = 'debug-msg';
+				div.innerHTML = "<span class='debug-header " + header + "'>" + header + "</span>" + msg + "</span>";
+				debugOutput.appendChild(div);
+			}
 		}
 	}
 
@@ -42,3 +43,12 @@ YOKUL.log = (function() {
 		}
 	};
 })();
+
+YOKUL.defaults = {
+	titleHeight: 24,
+	titleFont: "14px sans-serif",
+	titleColor: "#444444",
+	axisLabelHeight: 12,
+	axisLabelFont: "11px sans-serif",
+	axisLabelColor: "gray"
+};

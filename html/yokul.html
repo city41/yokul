@@ -53,10 +53,11 @@
 	<script type="text/javascript" src="../src/chartTypes.js"></script>
 	<script type="text/javascript" src="../src/tokenizer.js"></script>
 	<script type="text/javascript" src="../src/parser.js"></script>
-	<script type="text/javascript" src="../src/chart.js"></script>
+	<script type="text/javascript" src="../src/VerticalBarGrouped.js"></script>
 	<script type="text/javascript">
 		window.onload = function() {
 			YOKUL.debugOutput = "debugOutputDiv";
+			YOKUL.logOutput = { info: false, warning: true, error: true };
 			var query = document.getElementById("myQueryString").textContent;
 			var googleImg = document.getElementById("myGoogleChart");
 			googleImg.src = query;
