@@ -42,6 +42,26 @@ YOKUL.utility = {
 		}
 
 		return max;
+	},
+	min2d: function utility_min2d(arrays) {
+		var curMin = this.min(arrays[0]);
+		for(var i = 1; i < arrays.length; ++i) {
+			var m = this.min(arrays[i]);
+			if(m < curMin) {
+				curMin = m;
+			}
+		}
+		return curMin;
+	},
+	max2d: function utility_max2d(arrays) {
+		var curMax = this.max(arrays[0]);
+		for(var i = 1; i < arrays.length; ++i) {
+			var m = this.max(arrays[i]);
+			if(m > curMax) {
+				curMax = m;
+			}
+		}
+		return curMax;
 	}
 };
 

@@ -11,7 +11,7 @@ YOKUL.BarSpacing.prototype.getBarWidth = function BarSpacing_getBarWidth(numBars
 		if(typeof numBars === 'undefined' || typeof availableWidth === 'undefined') {
 			throw new Error("BarSpacing.getBarWidth: barWidth is set to automatic, so please provude numBars and availableWidth parameters");
 		}
-		return expectedWidth = (availableWidth - (this._betweenBars * numBars) - (this._betweenGroups * numGroups)) / numBars;
+		return Math.floor( (availableWidth - (this._betweenBars * numBars) - (this._betweenGroups * numGroups)) / numBars );
 	}
 };
 

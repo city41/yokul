@@ -51,6 +51,7 @@ BarSpacingTest.prototype.testCalculatesBarWidthCorrectly = function() {
 
 	// bw = (CAW - tw(NB) - gw(NG)) / NB
 	var expectedWidth = (availableWidth - (betweenWidth * numBars) - (groupWidth * numGroups)) / numBars;
+	expectedWidth = Math.floor(expectedWidth);
 
 
 	var b = new YOKUL.BarSpacing('a', betweenWidth, groupWidth);
