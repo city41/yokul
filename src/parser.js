@@ -2,24 +2,36 @@ YOKUL.Parser = (function() {
 
 	var _chd_handlers = {
 		t: function Parser_chd_t(value) {
-			value = value.replace(/_/g, ",null,");
-			
-			var data = [];
-			var split = value.split(',');
 
-			for(var i = 0; i < split.length; ++i){
-				var s = split[i];
-
-				if(s !== undefined && s !== '') {
-					if(s === 'null') {
-						data.push(null);
-					} else {
-						data.push(parseInt(s, 10));
+			function parseOneSet(set) {
+				set = set.replace(/_/g, ",null,");
+				
+				var data = [];
+				var _split = set.split(',');
+	
+				for(var i = 0; i < _split.length; ++i){
+					var s = _split[i];
+	
+					if(s !== undefined && s !== '') {
+						if(s === 'null') {
+							data.push(null);
+						} else {
+							data.push(parseFloat(s));
+						}
 					}
 				}
+
+				return data;
 			}
 
-			return data;
+			var allData = [];
+			var split = value.split('|');
+
+			for(var i = 0; i < split.length; ++i) {
+				allData.push(parseOneSet(split[i]));
+			}
+
+			return allData; 
 		}
 	};
 
@@ -31,6 +43,13 @@ YOKUL.Parser = (function() {
 			}
 	
 			this._size = { w: parseInt(split[0], 10), h: parseInt(split[1], 10) };
+
+			if(this._size.w > 1000) {
+				YOKUL.log.warning("Width, " + this._size.w + ", is greater than maximum of 1000");
+			}
+			if(this._size.h > 1000) {
+				YOKUL.log.warning("Height, " + this._size.h + ", is greater than maximum of 1000");
+			}
 		},
 
 		cht: function Parser_cht(value) {
@@ -51,7 +70,7 @@ YOKUL.Parser = (function() {
 		},
 
 		chtt: function Parser_chtt(value) {
-			this._title = value;
+			this._title = value.replace(/\+/g, ' ');
 		},
 
 		chbh: function Parser_chbh(value) {
@@ -87,8 +106,8 @@ YOKUL.Parser = (function() {
 			var ranges = [];
 
 			for(var i = 0; i < split.length; i += 2) {
-				var min = parseInt(split[i], 10);
-				var max = parseInt(split[i+1], 10);
+				var min = parseFloat(split[i]);
+				var max = parseFloat(split[i+1]);
 				ranges.push( { min: min, max: max });
 			}
 

@@ -1,8 +1,14 @@
 YOKUL = {
 	createChart: function(imgId, query) {
-		return new YOKUL.VerticalBarStacked(imgId, query);
+		return new YOKUL.VerticalBarGrouped(imgId, query);
 	},
 	debugOutput : null
+};
+
+YOKUL.useContext = function YOKUL_useContext(context, callback) {
+	context.save();
+	callback(context);
+	context.restore();
 };
 
 YOKUL.utility = {

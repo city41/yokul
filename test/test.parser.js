@@ -19,13 +19,15 @@ ParserTest.prototype.testParsesChtCorrectly = function() {
 };
 
 ParserTest.prototype.testParsesChdCorrectly = function() {
-	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200");
-	assertEquals("chd not parsed correctly", [null, 30, -30, 50, 80, 200], p.chartData());
+	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200|4,5,6|-12,4.3,88.8");
+	assertEquals("chd not parsed correctly", [[null, 30, -30, 50, 80, 200], [4, 5, 6], [-12, 4.3, 88.8 ]], p.chartData());
 };
 
 ParserTest.prototype.testParsesChttCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle");
 	assertEquals("chtt not parsed correctly", 'mytitle',p.title());
+	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle+with+spaces+in+it");
+	assertEquals("chtt not parsed correctly", 'mytitle with spaces in it',p.title());
 };
 
 ParserTest.prototype.testParsesChbhWithACorrectly = function() {
@@ -39,8 +41,8 @@ ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
 };
 
 ParserTest.prototype.testParsesChdsCorrectly = function() {
-	var p = new YOKUL.Parser(URL_ROOT + "?chds=-40,100,-20,200");
-	assertEquals("chds not parsed correctly", [{ min: -40, max: 100 }, { min: -20, max: 200 }], p.seriesRanges());
+	var p = new YOKUL.Parser(URL_ROOT + "?chds=-40.4,110.88,-1.3,2.5");
+	assertEquals("chds not parsed correctly", [{ min: -40.4, max: 110.88 }, { min: -1.3, max: 2.5 }], p.seriesRanges()); 
 };
 
 ParserTest.prototype.testParsesChdlCorrectly = function() {
