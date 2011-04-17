@@ -13,6 +13,35 @@ YOKUL.useContext = function YOKUL_useContext(context, callback) {
 YOKUL.utility = {
 	getQueryDataFromElement: function utility_getQueryDataFromElement(element) {
 		return element.dataset["src"] || element.dataset["chart-src"];
+	},
+
+	min: function utility_min(array) {
+		if(!array || !array.length) {
+			return undefined;
+		}
+	
+		var min = 99999999999;
+		for(var i = 0; i < array.length; ++i) {
+			if(array[i] < min) {
+				min = array[i];
+			}
+		}
+
+		return min;
+	},
+	max: function utility_max(array) {
+		if(!array || !array.length) {
+			return undefined;
+		}
+	
+		var max = -99999999999;
+		for(var i = 0; i < array.length; ++i) {
+			if(array[i] > max) {
+				max = array[i];
+			}
+		}
+
+		return max;
 	}
 };
 

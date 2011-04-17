@@ -3,7 +3,7 @@ YOKUL.chartTypes = {
 		verticalStacked : 'bvs',
 		verticalGrouped : 'bvg',
 		specific : {
-			automaticSpacing : 'a'
+			automaticSpacing : { barWidth: 23, betweenBars: 4, betweenGroups: 4 }
 		},
 		defaults: {
 			barWidth: 23,

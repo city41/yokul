@@ -44,22 +44,34 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbs_measureChart
 
 	measure.h -= bottomAxisHeight;
 
-	function getMaxLabelWidth(labels) {
+	function getMaxLabelWidth(index) {
+		var labels = parser.axisLabels();
+
 		var max = 0;
-		for(var i = 0; i < labels.length; ++i) {
-			var labelWidth = context.measureText(labels[i]);
-			if(labelWidth > max) {
-				max = labelWidth;
+		if(labels && labels[index]) {
+			for(var i = 0; i < labels.length; ++i) {
+				var labelWidth = context.measureText(labels[i]).width;
+				if(labelWidth > max) {
+					max = labelWidth;
+				}
+			}
+		} else {
+			var data = parser.chartData();
+
+			if(data && data[index]) {
+				var dataMax = YOKUL.utility.max(data[index]);
+				max = context.measureText(dataMax.toString()).width;
 			}
 		}
+
 		return max;
 	}
 
 	// left axis
 	var leftAxisWidth = 0;
-	for(var i = 0; i < visibleAxes.height; ++i) {
+	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'y') {
-			leftAxisWidth += getMaxLabelWidth(p.axisLabels()[i]);
+			leftAxisWidth += getMaxLabelWidth(i); //p.axisLabels()[i]);
 		}
 	}
 
@@ -68,21 +80,42 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbs_measureChart
 	return measure;
 };
 
+YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange(index, parser) {
+	var specifiedRanges = parser.seriesRanges();
+
+	if(specifiedRanges && specifiedRanges[index]) {
+		return specifiedRanges[index];
+	}
+
+	if(specifiedRanges && specifiedRanges[0]) {
+		return specifiedRanges[0];
+	}
+
+	var data = parser.chartData();
+
+	if(data && data[index]) {
+		return { min: YOKUL.utility.min(data[index]), max: YOKUL.utility.max(data[index]) };
+	}
+
+	return { min: 0, max: 100 };
+};
+
 YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbs_drawChartArea(context, measurement, parser) {
 	var chartSpacing = parser.chartSpacing();
 	var seriesColors = parser.seriesColors();
 	var data = parser.chartData();
-	var seriesRanges = parser.seriesRanges()[0];
 
 	var areaHeight = measurement.h;
-	var range = seriesRanges.max - seriesRanges.min;
-	var zeroY = measurement.y + areaHeight * (seriesRanges.max / range);
 
-	var currentX = chartSpacing.betweenGroups / 2;
+	var currentX = measurement.x + chartSpacing.betweenGroups / 2;
 
 	//-0.8,0.8,-0.6|-1.2,1,-0.3|-0.4,1.3,-0.1|-0.1,-0.4,-0.6|-0.3,-0.4,0|0.4,-1.2,0.4|-0.4,-0.4,0.4
 	for(var g = 0; g < data[0].length; ++g) {
 		for(var i = 0; i < data.length; ++i) {
+			var seriesRanges = this._getSeriesRange(i, parser);
+			var range = seriesRanges.max - seriesRanges.min;
+			var zeroY = measurement.y + areaHeight * (seriesRanges.max / range);
+
 			var value = data[i][g];
 			var barValue = areaHeight * (value / range);
 			var barHeight = Math.abs(barValue);
@@ -220,9 +253,11 @@ YOKUL.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGroup
 		that._drawTitle(context, chartAreaMeasure, parser);
 	});
 
-	YOKUL.useContext(context, function(context) {
-		that._drawLegend(context, chartAreaMeasure, parser);
-	});
+	if(parser.legendSpecified()) {
+		YOKUL.useContext(context, function(context) {
+			that._drawLegend(context, chartAreaMeasure, parser);
+		});
+	}
 
 	return canvas.toDataURL('image/png');
 };

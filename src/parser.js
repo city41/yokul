@@ -234,3 +234,6 @@ YOKUL.Parser.prototype.axisLabels = function Parser_axisLabels() {
 	return this._axisLabels;
 };
 
+YOKUL.Parser.prototype.legendSpecified = function Parser_legendSpecified() {
+	return !!(this._legendLabels);
+}
