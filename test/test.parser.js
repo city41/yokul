@@ -19,9 +19,14 @@ ParserTest.prototype.testParsesChtCorrectly = function() {
 	assertEquals("cht not parsed correctly", YOKUL.chartTypes.bar.verticalGrouped, p.chartType());
 };
 
-ParserTest.prototype.testParsesChdCorrectly = function() {
+ParserTest.prototype.testParsesChd_t_Correctly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200|4,5,6|-12,4.3,88.8");
 	assertEquals("chd not parsed correctly", [[null, 30, -30, 50, 80, 200], [4, 5, 6], [-12, 4.3, 88.8 ]], p.chartData());
+};
+
+ParserTest.prototype.testParsesChd_s_Correctly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chd=s:BTb19_,Mn5tzb");
+	assertEquals("chd not parsed correctly", [[1,19,27,53,61,-1], [12,39,57,45,51,27]], p.chartData());
 };
 
 ParserTest.prototype.testParsesChttCorrectly = function() {
@@ -84,6 +89,11 @@ ParserTest.prototype.testParsesChcoCorrectly = function() {
 ParserTest.prototype.testParsesChxtCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chxt=x,x,y,r,t,t");
 	assertEquals("chxt not parsed correctly", ['x', 'x', 'y', 'r', 't', 't'], p.visibleAxes());
+};
+
+ParserTest.prototype.testCreatesDefaultVisibleAxesIfChxtNotPresent = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
+	assertEquals("chxt not parsed correctly", [], p.visibleAxes());
 };
 
 ParserTest.prototype.testParsesChxlCorrectly = function() {

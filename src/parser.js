@@ -32,6 +32,36 @@ YOKUL.Parser = (function() {
 			}
 
 			return allData; 
+		},
+		s: function Parser_chd_t(value) {
+			function decode(c) {
+				if(c >= 'A' && c <= 'Z') {
+					return c.charCodeAt(0) - 'A'.charCodeAt(0);
+				} else if(c >= 'a' && c <= 'z') {
+					return c.charCodeAt(0) - 'a'.charCodeAt(0) + 26;
+				} else if(c >= '0' && c <= '9') {
+					return c.charCodeAt(0) - '0'.charCodeAt(0) + 52;
+				} else {
+					return -1;
+				}
+			}
+
+			function parseOneSet(set) {
+				var data = [];
+				for(var i = 0; i < set.length; ++i) {
+					data.push(decode(set.charAt(i)));
+				}
+
+				return data;
+			}
+
+			var allData = [];
+			var split = value.split(',');
+			for(var i = 0; i < split.length; ++i) {
+				allData.push(parseOneSet(split[i]));
+			}
+
+			return allData;
 		}
 	};
 
@@ -255,6 +285,10 @@ YOKUL.Parser.prototype.seriesColors = function Parser_seriesColors() {
 };
 
 YOKUL.Parser.prototype.visibleAxes = function Parser_visibleAxes() {
+	if(!this._visibleAxes) {
+		this._visibleAxes = [];
+	}
+
 	return this._visibleAxes;
 };
 

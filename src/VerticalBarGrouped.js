@@ -80,7 +80,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	}
 
 	// left axis
-	var leftAxisWidth = 0;
+	var leftAxisWidth = 1;
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'y') {
 			leftAxisWidth += getMaxLabelWidth(i); //p.axisLabels()[i]);
