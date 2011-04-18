@@ -235,6 +235,10 @@ YOKUL.Parser.prototype.title = function Parser_title() {
 };
 
 YOKUL.Parser.prototype.chartSpacing = function Parser_chartSpacing() {
+	if(!this._chartSpacing) {
+		this._chartSpacing = new YOKUL.BarSpacing();
+	}
+
 	return this._chartSpacing;
 };
 

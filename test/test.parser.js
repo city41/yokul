@@ -59,6 +59,13 @@ ParserTest.prototype.testParsesChbhWithZeroValuesCorrectly = function() {
 	assertEquals("between group width not expected default", 30, p.chartSpacing().getBetweenGroups());
 };
 
+ParserTest.prototype.testCreatesDefaultBarSpacingIfChbhIsNotPresent = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
+	assertEquals("bar width not expected default", YOKUL.chartTypes.bar.defaults.barWidth, p.chartSpacing().getBarWidth());
+	assertEquals("between bar width not expected default", YOKUL.chartTypes.bar.defaults.betweenBarWidth, p.chartSpacing().getBetweenBars());
+	assertEquals("between group width not expected default", YOKUL.chartTypes.bar.defaults.betweenGroupWidth, p.chartSpacing().getBetweenGroups());
+};
+
 ParserTest.prototype.testParsesChdsCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chds=-40.4,110.88,-1.3,2.5");
 	assertEquals("chds not parsed correctly", [{ min: -40.4, max: 110.88 }, { min: -1.3, max: 2.5 }], p.seriesRanges()); 
