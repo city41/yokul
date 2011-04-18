@@ -54,6 +54,7 @@
 	<script type="text/javascript" src="../src/barSpacing.js"></script>
 	<script type="text/javascript" src="../src/parser.js"></script>
 	<script type="text/javascript" src="../src/VerticalBarGrouped.js"></script>
+	<script type="text/javascript" src="../src/chartCreator.js"></script>
 	<script type="text/javascript">
 		window.onload = function() {
 			YOKUL.debugOutput = "debugOutputDiv";
@@ -62,7 +63,7 @@
 			var googleImg = document.getElementById("myGoogleChart");
 			googleImg.src = query;
 
-			var chart = YOKUL.createChart("myYokulChart", query);
+			var chart = YOKUL.chartCreator.create("myYokulChart", query);
 		};
 	</script>
 	</body>

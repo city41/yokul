@@ -1,15 +1,11 @@
 
-YOKUL.VerticalBarGrouped = function VerticalBarGrouped(id, queryData) {
-	var element = document.getElementById(id);
-
-	if(typeof queryData === 'undefined') {
-		queryData = YOKUL.utility.getQueryDataFromElement(element);
-	}
-
-	var imageData = this._createChartImage(queryData);
-	element.src = imageData;
+YOKUL.VerticalBarGrouped = function VerticalBarGrouped(queryData) {
+	this._imageData = this._createChartImage(queryData);
 };
 
+YOKUL.VerticalBarGrouped.prototype.imageData = function vbg_imageData() {
+	return this._imageData;
+};
 
 YOKUL.VerticalBarGrouped.prototype._getChartAreaWidth = function vbg_getChartAreaWidth(parser) {
 	var chartSpacing = parser.chartSpacing();
@@ -39,7 +35,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	measure.h -= titleMeasure;
 
 	// bottom axis
-	var bottomAxisHeight = 0;
+	var bottomAxisHeight = 6;
 	var visibleAxes = parser.visibleAxes();
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'x') {
@@ -48,6 +44,17 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	}
 
 	measure.h -= bottomAxisHeight;
+
+	// top axis
+	var topAxisHeight = 6;
+	for(var i = 0; i < visibleAxes.length; ++i) {
+		if(visibleAxes[i] == 't') {
+			topAxisHeight += YOKUL.defaults.axisLabelHeight;
+		}
+	}
+
+	measure.y += topAxisHeight;
+	measure.h -= topAxisHeight;
 
 	function getMaxLabelWidth(index) {
 		var labels = parser.axisLabels();
@@ -102,9 +109,22 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange
 	return { min: 0, max: 100 };
 };
 
+YOKUL.VerticalBarGrouped.prototype._getSeriesColor = function vbg_getSeriesColor(index, parser) {
+	var seriesColors = parser.seriesColors();
+
+	if(seriesColors && seriesColors[index]) {
+		return seriesColors[index];
+	}
+
+	if(seriesColors && seriesColors[index % seriesColors.length]) {
+		return seriesColors[index % seriesColors.length];
+	}
+
+	return YOKUL.defaults.seriesColor;
+};
+
 YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(context, measurement, parser) {
 	var chartSpacing = parser.chartSpacing();
-	var seriesColors = parser.seriesColors();
 	var data = parser.chartData();
 
 	var areaHeight = measurement.h;
@@ -128,7 +148,7 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 			}
 
 			context.save();
-			context.fillStyle = seriesColors[i];
+			context.fillStyle = this._getSeriesColor(i, parser);//seriesColors[i];
 			context.fillRect(currentX, barY, barWidth, barHeight);
 			context.restore();
 			currentX += barWidth;
@@ -145,10 +165,10 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
 	context.strokeStyle = "gray";
 	context.beginPath();
-	context.moveTo(measurement.x, measurement.y);
-	context.lineTo(measurement.x, measurement.y + measurement.h);
-	context.lineTo(measurement.x + measurement.w, measurement.y + measurement.h);
-	context.moveTo(measurement.x, measurement.y);
+	context.moveTo(measurement.x + .5, measurement.y + .5);
+	context.lineTo(measurement.x + .5, measurement.y + measurement.h + .5);
+	context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
+	context.moveTo(measurement.x + .5, measurement.y + .5);
 	context.closePath();
 	context.stroke();
 };
@@ -199,7 +219,7 @@ YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, 
 		context.fillStyle = YOKUL.defaults.titleColor;
 		var center = measurement.x + measurement.w / 2;
 		var measured = context.measureText(title);
-		context.fillText(title, center - measured.width / 2, YOKUL.defaults.titleHeight / 2);
+		context.fillText(title, center - measured.width / 2, (2 * YOKUL.defaults.titleHeight) / 3 );
 	}
 };
 
@@ -215,7 +235,7 @@ YOKUL.VerticalBarGrouped.prototype._drawLegend = function vbg_drawLegend(context
 
 	for(var i = 0; i < legendLabels.length; ++i) {
 		context.save();
-		context.fillStyle = seriesColors[i];
+		context.fillStyle = this._getSeriesColor(i, parser);
 		context.fillRect(startX, startY, entryHeight, entryHeight);
 		context.fillStyle = "gray";
 		context.fillText(legendLabels[i], startX + entryHeight + spacing, startY + ((entryHeight + spacing) / 2));

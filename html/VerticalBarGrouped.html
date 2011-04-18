@@ -88,6 +88,7 @@
 	<script type="text/javascript" src="../src/barSpacing.js"></script>
 	<script type="text/javascript" src="../src/parser.js"></script>
 	<script type="text/javascript" src="../src/VerticalBarGrouped.js"></script>
+	<script type="text/javascript" src="../src/chartCreator.js"></script>
 	<script type="text/javascript">
 		function update(i) {
 			var queryElement = document.getElementById("query" + i);
@@ -97,7 +98,7 @@
 				googleImg.src = queryElement.value;
 
 				if(document.getElementById("ychart" + i)) {
-					YOKUL.createChart("ychart" + i, queryElement.value);
+					YOKUL.chartCreator.create("ychart" + i, queryElement.value);
 				}
 			}
 		}

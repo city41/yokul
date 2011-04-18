@@ -1,8 +1,4 @@
-YOKUL = {
-	createChart: function(imgId, query) {
-		return new YOKUL.VerticalBarGrouped(imgId, query);
-	}
-};
+YOKUL = {};
 
 YOKUL.useContext = function YOKUL_useContext(context, callback) {
 	context.save();
@@ -99,5 +95,6 @@ YOKUL.defaults = {
 	titleColor: "#444444",
 	axisLabelHeight: 12,
 	axisLabelFont: "11px sans-serif",
-	axisLabelColor: "gray"
+	axisLabelColor: "gray",
+	seriesColor: "#ffcc33"
 };

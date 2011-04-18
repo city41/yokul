@@ -7,15 +7,16 @@ ParserTest.prototype.testThrowsExceptionIfNoInputProvided = function() {
 		new YOKUL.Parser();
 	});
 };
-
+ 
 ParserTest.prototype.testParsesChsCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chs=123x456");
 	assertEquals("chs not parsed correctly", { w: 123, h: 456 }, p.size());
 };
 
 ParserTest.prototype.testParsesChtCorrectly = function() {
-	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvs");
-	assertEquals("cht not parsed correctly", YOKUL.chartTypes.bar.verticalStacked, p.chartType());
+	assertEquals("chartTypes not set up correctly", "bvg", YOKUL.chartTypes.bar.verticalGrouped);
+	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
+	assertEquals("cht not parsed correctly", YOKUL.chartTypes.bar.verticalGrouped, p.chartType());
 };
 
 ParserTest.prototype.testParsesChdCorrectly = function() {
