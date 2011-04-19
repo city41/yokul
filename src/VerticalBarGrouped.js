@@ -36,22 +36,13 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 
 	// bottom axis
 	var bottomAxisHeight = 6;
-	var visibleAxes = parser.visibleAxes();
-	for(var i = 0; i < visibleAxes.length; ++i) {
-		if(visibleAxes[i] == 'x') {
-			bottomAxisHeight += YOKUL.defaults.axisLabelHeight;
-		}
-	}
+	bottomAxisHeight += parser.visibleAxesCount('x') * YOKUL.defaults.axisLabelHeight;
 
 	measure.h -= bottomAxisHeight;
 
 	// top axis
 	var topAxisHeight = 6;
-	for(var i = 0; i < visibleAxes.length; ++i) {
-		if(visibleAxes[i] == 't') {
-			topAxisHeight += YOKUL.defaults.axisLabelHeight;
-		}
-	}
+	topAxisHeight += parser.visibleAxesCount('t') * YOKUL.defaults.axisLabelHeight;
 
 	measure.y += topAxisHeight;
 	measure.h -= topAxisHeight;
@@ -76,11 +67,13 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 			}
 		}
 
-		return max;
+		// there is a margin on both sides
+		return max + YOKUL.defaults.verticalAxisLabelMargin * 2;
 	}
 
 	// left axis
 	var leftAxisWidth = 1;
+	var visibleAxes = parser.visibleAxes();
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'y') {
 			leftAxisWidth += getMaxLabelWidth(i); //p.axisLabels()[i]);
@@ -103,9 +96,6 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange
 		return specifiedRanges[0];
 	}
 
-	//var data = parser.chartData();
-
-	//return { min: YOKUL.utility.min2d(data), max: YOKUL.utility.max2d(data) };
 	return { min: 0, max: 100 };
 };
 
@@ -130,6 +120,8 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 	var areaHeight = measurement.h;
 
 	var currentX = measurement.x + chartSpacing.getBetweenGroups() / 2;
+	currentX += parser.visibleAxesCount('y');
+
 	var barWidth = chartSpacing.getBarWidth(data.length * data[0].length, data.length, measurement.w);
 
 	//-0.8,0.8,-0.6|-1.2,1,-0.3|-0.4,1.3,-0.1|-0.1,-0.4,-0.6|-0.3,-0.4,0|0.4,-1.2,0.4|-0.4,-0.4,0.4
@@ -173,24 +165,51 @@ YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, me
 	context.stroke();
 };
 
+YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser) {
+	var allAxisLabels = parser.axisLabels();
+
+	var axisLabels = null;
+	
+
+	if(allAxisLabels && allAxisLabels['axis' + index]) {
+		axisLabels = allAxisLabels['axis' + index];
+	}
+
+	if(axisName === 'y' || axisName === 'r') {
+		axisLabels = [];
+		for(var i = 0; i <= 10; ++i) {
+			axisLabels.push((i * 10).toString());
+		}
+
+	} else {
+		var dataCount = parser.chartData()[0].length;
+		axisLabels = [];
+		for(var i = 0; i < dataCount; ++i) {
+			axisLabels.push(i.toString());
+		}
+	}
+
+	return axisLabels;
+};
+
 YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
 	var visibleAxes = parser.visibleAxes();
 	var axisLabels = parser.axisLabels();
 
 	var curAxisIndex = 0;
 
-	function drawLabel(index, labels) {
+	context.strokeStyle = "Gray";
+	context.fillStyle = YOKUL.defaults.axisLabelColor;
+	context.font = YOKUL.defaults.axisLabelFont;
+
+	function drawHorizontalLabel(index, labels, drawTicks) {
 		var labelHeight = YOKUL.defaults.axisLabelHeight;
 		var widthPerLabel = measurement.w / labels.length;
 		var curX = widthPerLabel / 2;
 		var curY = measurement.y + measurement.h + (labelHeight * (index + 1));
 
-		context.strokeStyle = "Gray";
-		context.fillStyle = YOKUL.defaults.axisLabelColor;
-		context.font = YOKUL.defaults.axisLabelFont;
-
 		for(var l = 0; l < labels.length; ++l) {
-			if(index === 0) {
+			if(drawTicks) {
 				context.beginPath();
 				context.moveTo(curX, curY - (labelHeight - 4));
 				context.lineTo(curX, curY - (labelHeight + 1));
@@ -204,11 +223,37 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 		}
 	}
 
-	for(var i = 0; i < visibleAxes.length; ++i) {
-		if(visibleAxes[i] === axis && axisLabels['axis' + i]) {
-			drawLabel(curAxisIndex, axisLabels['axis' + i]);
+	function drawVerticalLabel(index, labels, drawTicks) {
+		var x = YOKUL.defaults.verticalAxisLabelMargin / 2;
+		var y = measurement.y;
+		var totalHeight = measurement.h;
+		var step = totalHeight / (labels.length - 1);
+
+		for(var l = labels.length - 1; l >= 0; --l) {
+			if(drawTicks) {
+				context.beginPath();
+				context.moveTo(measurement.x + .5, y + .5);
+				context.lineTo(measurement.x - 3 + .5, y + .5);
+				context.closePath();
+				context.stroke();
+			}
+
+			var labelWidth = context.measureText(labels[l]).width;
+			var maxWidth = measurement.x - YOKUL.defaults.verticalAxisLabelMargin - 2;
+			var curX = x + maxWidth - labelWidth;
+			context.fillText(labels[l], curX, y + YOKUL.defaults.axisLabelHeight/ 2);
+			y += step;
 		}
 	}
+
+	var drawLabel = (axis === 'x' || axis === 't') ? drawHorizontalLabel : drawVerticalLabel;
+
+	for(var i = 0; i < visibleAxes.length; ++i) {
+		if(visibleAxes[i] === axis) {
+			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser), true);
+		}
+	}
+	alert(measurement.w);
 };
 
 YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, measurement, parser) {
@@ -270,6 +315,10 @@ YOKUL.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGroup
 
 	YOKUL.useContext(context, function(context) {
 		that._drawAxisLabels(context, chartAreaMeasure, parser, 'x');
+	});
+
+	YOKUL.useContext(context, function(context) {
+		that._drawAxisLabels(context, chartAreaMeasure, parser, 'y');
 	});
 
 	YOKUL.useContext(context, function(context) {

@@ -286,10 +286,22 @@ YOKUL.Parser.prototype.seriesColors = function Parser_seriesColors() {
 
 YOKUL.Parser.prototype.visibleAxes = function Parser_visibleAxes() {
 	if(!this._visibleAxes) {
-		this._visibleAxes = [];
+		this._visibleAxes = ['x', 'y'];
 	}
 
 	return this._visibleAxes;
+};
+
+YOKUL.Parser.prototype.visibleAxesCount = function Parser_visibleAxesCount(axisName) {
+	var visibleAxes = this.visibleAxes();
+	var count = 0;
+	for(var i = 0, l = visibleAxes.length; i < l; ++i) {
+		if(visibleAxes[i] === axisName) {
+			++count;
+		}
+	}
+
+	return count;
 };
 
 YOKUL.Parser.prototype.axisLabels = function Parser_axisLabels() {

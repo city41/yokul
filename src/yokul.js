@@ -93,8 +93,9 @@ YOKUL.defaults = {
 	titleHeight: 24,
 	titleFont: "14px sans-serif",
 	titleColor: "#444444",
-	axisLabelHeight: 12,
+	axisLabelHeight: 8,
 	axisLabelFont: "11px sans-serif",
 	axisLabelColor: "gray",
-	seriesColor: "#ffcc33"
+	seriesColor: "#ffcc33",
+	verticalAxisLabelMargin: 5
 };

@@ -93,7 +93,15 @@ ParserTest.prototype.testParsesChxtCorrectly = function() {
 
 ParserTest.prototype.testCreatesDefaultVisibleAxesIfChxtNotPresent = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
-	assertEquals("chxt not parsed correctly", [], p.visibleAxes());
+	assertEquals("chxt not parsed correctly", ['x', 'y'], p.visibleAxes());
+};
+
+ParserTest.prototype.testVisibleAxesCount = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chxt=x,x,y,x,y,t,t");
+	assertEquals("visible axes count not expected for x", 3, p.visibleAxesCount('x'));
+	assertEquals("visible axes count not expected for y", 2, p.visibleAxesCount('y')); 
+	assertEquals("visible axes count not expected for unknown axis name", 0, p.visibleAxesCount('k'));
+
 };
 
 ParserTest.prototype.testParsesChxlCorrectly = function() {
