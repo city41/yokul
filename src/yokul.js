@@ -97,5 +97,5 @@ YOKUL.defaults = {
 	axisLabelFont: "11px sans-serif",
 	axisLabelColor: "gray",
 	seriesColor: "#ffcc33",
-	verticalAxisLabelMargin: 5
+	verticalAxisLabelMargin: 5.5
 };

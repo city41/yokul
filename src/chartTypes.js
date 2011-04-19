@@ -8,7 +8,9 @@ YOKUL.chartTypes = {
 		defaults: {
 			barWidth: 23,
 			betweenBarWidth: 4,
-			betweenGroupWidth: 4
+			betweenGroupWidth: 8,
+			betweenBarWidthSoleA : 3,
+			betweenGroupWidthSoleA : 3
 		}
 	}
 };

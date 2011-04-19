@@ -30,8 +30,8 @@ BarSpacingTest.prototype.testGetBarWidthWithStaticBarWidth = function() {
 BarSpacingTest.prototype.testSetsIsAutomaticBarWidthFlag = function() {
 	var b = new YOKUL.BarSpacing('a');
 	assertEquals("isAutomaticBarWidth not set correctly", true, b.isAutomaticBarWidth());
-	assertEquals("betweenBars unexpected value", YOKUL.chartTypes.bar.defaults.betweenBarWidth, b.getBetweenBars());
-	assertEquals("betweenGroups unexpected value", YOKUL.chartTypes.bar.defaults.betweenGroupWidth, b.getBetweenGroups());
+	assertEquals("betweenBars unexpected value", YOKUL.chartTypes.bar.defaults.betweenBarWidthSoleA, b.getBetweenBars());
+	assertEquals("betweenGroups unexpected value", YOKUL.chartTypes.bar.defaults.betweenGroupWidthSoleA, b.getBetweenGroups());
 };
 
 BarSpacingTest.prototype.testThrowsExceptionIfAutomaticBarWidthButCallGetBarWidthWithoutNeededValues = function() {
@@ -51,8 +51,6 @@ BarSpacingTest.prototype.testCalculatesBarWidthCorrectly = function() {
 
 	// bw = (CAW - tw(NB) - gw(NG)) / NB
 	var expectedWidth = (availableWidth - (betweenWidth * numBars) - (groupWidth * numGroups)) / numBars;
-	expectedWidth = Math.floor(expectedWidth);
-
 
 	var b = new YOKUL.BarSpacing('a', betweenWidth, groupWidth);
 

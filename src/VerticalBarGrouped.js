@@ -81,6 +81,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	}
 
 	measure.x += leftAxisWidth;
+	measure.w -= leftAxisWidth;
 
 	return measure;
 };
@@ -173,15 +174,15 @@ YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(i
 
 	if(allAxisLabels && allAxisLabels['axis' + index]) {
 		axisLabels = allAxisLabels['axis' + index];
-	}
-
-	if(axisName === 'y' || axisName === 'r') {
+	} 
+	else if(axisName === 'y' || axisName === 'r') {
 		axisLabels = [];
 		for(var i = 0; i <= 10; ++i) {
 			axisLabels.push((i * 10).toString());
 		}
 
-	} else {
+	} 
+	else {
 		var dataCount = parser.chartData()[0].length;
 		axisLabels = [];
 		for(var i = 0; i < dataCount; ++i) {
@@ -253,7 +254,6 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser), true);
 		}
 	}
-	alert(measurement.w);
 };
 
 YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, measurement, parser) {

@@ -127,6 +127,8 @@ YOKUL.Parser = (function() {
 				if(isNaN(betweenBars)) {
 					betweenBars = YOKUL.chartTypes.bar.defaults.betweenBarWidth;
 				}
+			} else if(barWidth === 'a') {
+				betweenBars = undefined;
 			} else {
 				betweenBars = YOKUL.chartTypes.bar.defaults.betweenBarWidth;
 			}
@@ -137,6 +139,8 @@ YOKUL.Parser = (function() {
 				if(isNaN(betweenGroups)) {
 					betweenGroups = YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
 				}
+			} else if(barWidth === 'a') {
+				betweenGroups = undefined;
 			} else {
 				betweenGroups = YOKUL.chartTypes.bar.defaults.betweenGroupWidth;
 			}
@@ -286,7 +290,7 @@ YOKUL.Parser.prototype.seriesColors = function Parser_seriesColors() {
 
 YOKUL.Parser.prototype.visibleAxes = function Parser_visibleAxes() {
 	if(!this._visibleAxes) {
-		this._visibleAxes = ['x', 'y'];
+		this._visibleAxes = [];
 	}
 
 	return this._visibleAxes;

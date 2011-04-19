@@ -39,8 +39,8 @@ ParserTest.prototype.testParsesChttCorrectly = function() {
 ParserTest.prototype.testParsesChbhWithACorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chbh=a");
 	assertTrue("should report its using automatic width", p.chartSpacing().isAutomaticBarWidth());
-	assertEquals("between bar width not expected default", YOKUL.chartTypes.bar.defaults.betweenBarWidth, p.chartSpacing().getBetweenBars());
-	assertEquals("between group width not expected default", YOKUL.chartTypes.bar.defaults.betweenGroupWidth, p.chartSpacing().getBetweenGroups());
+	assertEquals("between bar width not expected default", YOKUL.chartTypes.bar.defaults.betweenBarWidthSoleA, p.chartSpacing().getBetweenBars());
+	assertEquals("between group width not expected default", YOKUL.chartTypes.bar.defaults.betweenGroupWidthSoleA, p.chartSpacing().getBetweenGroups());
 };
 
 ParserTest.prototype.testParsesChbhWithPixelValuesCorrectly = function() {
@@ -93,7 +93,7 @@ ParserTest.prototype.testParsesChxtCorrectly = function() {
 
 ParserTest.prototype.testCreatesDefaultVisibleAxesIfChxtNotPresent = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
-	assertEquals("chxt not parsed correctly", ['x', 'y'], p.visibleAxes());
+	assertEquals("chxt not parsed correctly", [], p.visibleAxes());
 };
 
 ParserTest.prototype.testVisibleAxesCount = function() {
