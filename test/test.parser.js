@@ -19,6 +19,15 @@ ParserTest.prototype.testParsesChtCorrectly = function() {
 	assertEquals("cht not parsed correctly", YOKUL.chartTypes.bar.verticalGrouped, p.chartType());
 };
 
+ParserTest.prototype.testReportsDataEncodingTypeCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200|4,5,6|-12,4.3,88.8");
+	assertEquals("data encoding not reported correctly", 't', p.getDataEncodingType());
+	var p = new YOKUL.Parser(URL_ROOT + "?chd=s:TYU5aa");
+	assertEquals("data encoding not reported correctly", 's', p.getDataEncodingType());
+	var p = new YOKUL.Parser(URL_ROOT + "?chd=e:AAABAC");
+	assertEquals("data encoding not reported correctly", 'e', p.getDataEncodingType());
+};
+
 ParserTest.prototype.testParsesChd_t_Correctly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200|4,5,6|-12,4.3,88.8");
 	assertEquals("chd not parsed correctly", [[null, 30, -30, 50, 80, 200], [4, 5, 6], [-12, 4.3, 88.8 ]], p.chartData());

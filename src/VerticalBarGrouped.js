@@ -35,7 +35,11 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	measure.h -= titleMeasure;
 
 	// bottom axis
-	var bottomAxisHeight = 6;
+	var bottomAxisHeight = 1;
+	if(parser.visibleAxesCount('y') > 0) {
+		bottomAxisHeight += YOKUL.defaults.axisLabelHeight / 2;
+	}
+
 	bottomAxisHeight += parser.visibleAxesCount('x') * YOKUL.defaults.axisLabelHeight;
 
 	measure.h -= bottomAxisHeight;
@@ -47,8 +51,10 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	measure.y += topAxisHeight;
 	measure.h -= topAxisHeight;
 
-	function getMaxLabelWidth(index) {
-		var labels = parser.axisLabels();
+	var that = this;
+
+	function getMaxLabelWidth(index, axisName) {
+		var labels = that._getAxisLabels(index, axisName, parser);// parser.axisLabels();
 
 		var max = 0;
 		if(labels && labels[index]) {
@@ -76,7 +82,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	var visibleAxes = parser.visibleAxes();
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'y') {
-			leftAxisWidth += getMaxLabelWidth(i); //p.axisLabels()[i]);
+			leftAxisWidth += getMaxLabelWidth(i, 'y'); //p.axisLabels()[i]);
 		}
 	}
 
@@ -85,6 +91,34 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 
 	return measure;
 };
+
+YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser) {
+	var allAxisLabels = parser.axisLabels();
+
+	var axisLabels = null;
+	
+
+	if(allAxisLabels && allAxisLabels['axis' + index]) {
+		axisLabels = allAxisLabels['axis' + index];
+	} 
+	else if(axisName === 'y' || axisName === 'r') {
+		axisLabels = [];
+		for(var i = 0; i <= 10; ++i) {
+			axisLabels.push((i * 10).toString());
+		}
+
+	} 
+	else {
+		var dataCount = parser.chartData()[0].length;
+		axisLabels = [];
+		for(var i = 0; i < dataCount; ++i) {
+			axisLabels.push(i.toString());
+		}
+	}
+
+	return axisLabels;
+};
+
 
 YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange(index, parser) {
 	var specifiedRanges = parser.seriesRanges();
@@ -97,6 +131,7 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange
 		return specifiedRanges[0];
 	}
 
+	return YOKUL.defaults.seriesRangesByDataEncodingType[parser.getDataEncodingType()];
 	return { min: 0, max: 100 };
 };
 
@@ -166,32 +201,6 @@ YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, me
 	context.stroke();
 };
 
-YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser) {
-	var allAxisLabels = parser.axisLabels();
-
-	var axisLabels = null;
-	
-
-	if(allAxisLabels && allAxisLabels['axis' + index]) {
-		axisLabels = allAxisLabels['axis' + index];
-	} 
-	else if(axisName === 'y' || axisName === 'r') {
-		axisLabels = [];
-		for(var i = 0; i <= 10; ++i) {
-			axisLabels.push((i * 10).toString());
-		}
-
-	} 
-	else {
-		var dataCount = parser.chartData()[0].length;
-		axisLabels = [];
-		for(var i = 0; i < dataCount; ++i) {
-			axisLabels.push(i.toString());
-		}
-	}
-
-	return axisLabels;
-};
 
 YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
 	var visibleAxes = parser.visibleAxes();
@@ -206,7 +215,7 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 	function drawHorizontalLabel(index, labels, drawTicks) {
 		var labelHeight = YOKUL.defaults.axisLabelHeight;
 		var widthPerLabel = measurement.w / labels.length;
-		var curX = widthPerLabel / 2;
+		var curX = measurement.x + widthPerLabel / 2;
 		var curY = measurement.y + measurement.h + (labelHeight * (index + 1));
 
 		for(var l = 0; l < labels.length; ++l) {
@@ -262,7 +271,19 @@ YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, 
 	if(title) {
 		context.font = YOKUL.defaults.titleFont;
 		context.fillStyle = YOKUL.defaults.titleColor;
-		var center = measurement.x + measurement.w / 2;
+
+		var widthBasis = 0;
+
+		// the title should center itself on the chart area
+		// but if the chart area is larger than the chart itself,
+		// then it should center itself on the available chart area
+		if(measurement.x + measurement.w > context.canvas.width) {
+			widthBasis = context.canvas.width - measurement.x;
+		} else {
+			widthBasis = measurement.w;
+		}
+
+		var center = measurement.x + widthBasis / 2;
 		var measured = context.measureText(title);
 		context.fillText(title, center - measured.width / 2, (2 * YOKUL.defaults.titleHeight) / 3 );
 	}

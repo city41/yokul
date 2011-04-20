@@ -52,6 +52,7 @@ YOKUL.Parser = (function() {
 					data.push(decode(set.charAt(i)));
 				}
 
+				YOKUL.log.warning("cht:s " + data);
 				return data;
 			}
 
@@ -96,7 +97,9 @@ YOKUL.Parser = (function() {
 				throw new Error("Parser::chd: unknown value: " + value);
 			}
 
-			this._chartData = _chd_handlers[splitOnColon[0]](splitOnColon[1]);
+			this._dataEncodingType = splitOnColon[0];
+
+			this._chartData = _chd_handlers[this._dataEncodingType](splitOnColon[1]);
 		},
 
 		chtt: function Parser_chtt(value) {
@@ -258,6 +261,10 @@ YOKUL.Parser.prototype.size = function Parser_size() {
 
 YOKUL.Parser.prototype.chartType = function Parser_chartType() {
 	return this._chartType;
+};
+
+YOKUL.Parser.prototype.getDataEncodingType = function Parser_getDataEncodingType() {
+	return this._dataEncodingType;
 };
 
 YOKUL.Parser.prototype.chartData = function Parser_chartData() {

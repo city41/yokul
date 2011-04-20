@@ -97,5 +97,11 @@ YOKUL.defaults = {
 	axisLabelFont: "11px sans-serif",
 	axisLabelColor: "gray",
 	seriesColor: "#ffcc33",
-	verticalAxisLabelMargin: 5.5
+	verticalAxisLabelMargin: 5.5,
+
+	seriesRangesByDataEncodingType: {
+		t: { min: 0, max: 100 },  // basic text values chd=t:34,45,98
+		s: { min: 0, max: 61 },		// basic encoding  chd=s:YUw8
+		e: { min: 0, max: 4095 }	// extended encoding chd=d:PoqM
+	}
 };
