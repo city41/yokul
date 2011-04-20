@@ -52,7 +52,6 @@ YOKUL.Parser = (function() {
 					data.push(decode(set.charAt(i)));
 				}
 
-				YOKUL.log.warning("cht:s " + data);
 				return data;
 			}
 

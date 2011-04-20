@@ -68,7 +68,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	var that = this;
 
 	function getMaxLabelWidth(index, axisName) {
-		var labels = that._getAxisLabels(index, axisName, parser);// parser.axisLabels();
+		var labels = that._getAxisLabels(index, axisName, parser, measure.h);
 
 		var max = 0;
 		if(labels && labels[index]) {
@@ -96,7 +96,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	var visibleAxes = parser.visibleAxes();
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] == 'y') {
-			leftAxisWidth += getMaxLabelWidth(i, 'y'); //p.axisLabels()[i]);
+			leftAxisWidth += getMaxLabelWidth(i, 'y');
 		}
 	}
 
@@ -106,7 +106,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	return measure;
 };
 
-YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser) {
+YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser, span) {
 	var allAxisLabels = parser.axisLabels();
 
 	var axisLabels = null;
@@ -117,8 +117,19 @@ YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(i
 	} 
 	else if(axisName === 'y' || axisName === 'r') {
 		axisLabels = [];
-		for(var i = 0; i <= 10; ++i) {
-			axisLabels.push((i * 10).toString());
+		var labelCount = 10;// Math.min(11, Math.floor(span / 10));
+
+		var axisRange = this._getAxisRange(index, parser);
+		var spacing = (axisRange.max - axisRange.min) / labelCount;
+		var firstLabel = axisRange.min;
+
+		while(firstLabel % spacing !== 0) {
+			++firstLabel;
+		}
+
+		for(var i = 0; i <= labelCount; ++i) {
+			axisLabels.push(Math.round(firstLabel).toString());
+			firstLabel += spacing;
 		}
 
 	} 
@@ -146,7 +157,17 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange
 	}
 
 	return YOKUL.defaults.seriesRangesByDataEncodingType[parser.getDataEncodingType()];
-	return { min: 0, max: 100 };
+};
+
+YOKUL.VerticalBarGrouped.prototype._getAxisRange = function vbg_getAxisRange(index, parser) {
+	var axisRanges = parser.axisRanges();
+
+	if(axisRanges && axisRanges[index]) {
+		var axisRange = axisRanges[index];
+		return { min: axisRange[0], max: axisRange[1] };
+	}
+
+	return YOKUL.defaults.seriesRangesByDataEncodingType[parser.getDataEncodingType()];
 };
 
 YOKUL.VerticalBarGrouped.prototype._getSeriesColor = function vbg_getSeriesColor(index, parser) {
@@ -218,7 +239,6 @@ YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, me
 
 YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
 	var visibleAxes = parser.visibleAxes();
-	var axisLabels = parser.axisLabels();
 
 	var curAxisIndex = 0;
 
@@ -247,9 +267,13 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 		}
 	}
 
-	function drawVerticalLabel(index, labels, drawTicks) {
+	function drawVerticalLabel(index, labels, drawTicks, offset) {
+		if(!offset) {
+			offset = 0;
+		}
+
 		var x = YOKUL.defaults.verticalAxisLabelMargin / 2;
-		var y = measurement.y;
+		var y = measurement.y - offset;
 		var totalHeight = measurement.h;
 		var step = totalHeight / (labels.length - 1);
 
@@ -274,7 +298,7 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] === axis) {
-			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser), true);
+			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser, (axis === 'x' || axis === 'r') ? measurement.w : measurement.h), true);
 		}
 	}
 };
