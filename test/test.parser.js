@@ -40,9 +40,18 @@ ParserTest.prototype.testParsesChd_s_Correctly = function() {
 
 ParserTest.prototype.testParsesChttCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle");
-	assertEquals("chtt not parsed correctly", 'mytitle',p.title());
+	assertEquals("chtt not parsed correctly", ['mytitle'], p.title());
+	
 	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle+with+spaces+in+it");
-	assertEquals("chtt not parsed correctly", 'mytitle with spaces in it',p.title());
+	assertEquals("chtt not parsed correctly", ['mytitle with spaces in it'], p.title());
+
+	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle+with+spaces+in+it|and+a+line+break");
+	assertEquals("chtt not parsed correctly", ['mytitle with spaces in it', 'and a line break'], p.title());
+};
+
+ParserTest.prototype.testParsesChtsCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chts=FF0000,20");
+	assertEquals("chts not parsed correctly",{ color: "#FF0000", size: 20 }, p.titleStyle());
 };
 
 ParserTest.prototype.testParsesChbhWithACorrectly = function() {
@@ -98,6 +107,11 @@ ParserTest.prototype.testParsesChcoCorrectly = function() {
 ParserTest.prototype.testParsesChxtCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chxt=x,x,y,r,t,t");
 	assertEquals("chxt not parsed correctly", ['x', 'x', 'y', 'r', 't', 't'], p.visibleAxes());
+};
+
+ParserTest.prototype.testParsesChxrCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chxr=0,0,500|1,0,200|2,1000,0");
+	assertEquals("chxr not parsed correctly", [[0, 500], [0, 200], [1000,0]], p.axisRanges());
 };
 
 ParserTest.prototype.testCreatesDefaultVisibleAxesIfChxtNotPresent = function() {

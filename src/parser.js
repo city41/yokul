@@ -103,7 +103,18 @@ YOKUL.Parser = (function() {
 		},
 
 		chtt: function Parser_chtt(value) {
-			this._title = value.replace(/\+/g, ' ');
+			value = value.replace(/\+/g, ' ');
+			this._title = value.split('|');
+		},
+
+		chts: function Parser_chts(value) {
+			var split = value.split(',');
+
+			if(split.length !== 2) {
+				throw new Error("Parser::chts: unexpected value: " + value);
+			}
+
+			this._titleStyle = { color: '#' + split[0], size: parseInt(split[1], 10) };
 		},
 
 		chbh: function Parser_chbh(value) {
@@ -182,6 +193,27 @@ YOKUL.Parser = (function() {
 
 		chxt: function Parser_chxt(value) {
 			this._visibleAxes = value.split(','); 
+		},
+
+		chxr: function Parser_chxr(value) {
+			var split = value.split('|');
+
+			var ranges = [];
+
+			for(var i = 0; i < split.length; ++i) {
+				var vals = split[i].split(',');
+				var index = parseInt(vals[0], 10);
+				vals = vals.splice(1);
+		
+				var range = [];
+				for(var k = 0; k < vals.length; ++k) {
+					range.push(parseFloat(vals[k]));
+				}
+
+				ranges[index] = range;
+			}
+
+			this._axisRanges = ranges;
 		},
 
 		chxl: function Parser_chxl(value) {
@@ -275,6 +307,10 @@ YOKUL.Parser.prototype.title = function Parser_title() {
 	return this._title;
 };
 
+YOKUL.Parser.prototype.titleStyle = function Parser_titleStyle() {
+	return this._titleStyle;
+};
+
 YOKUL.Parser.prototype.chartSpacing = function Parser_chartSpacing() {
 	if(!this._chartSpacing) {
 		this._chartSpacing = new YOKUL.BarSpacing();
@@ -301,6 +337,10 @@ YOKUL.Parser.prototype.visibleAxes = function Parser_visibleAxes() {
 	}
 
 	return this._visibleAxes;
+};
+
+YOKUL.Parser.prototype.axisRanges = function Parser_axisRanges() {
+	return this._axisRanges;
 };
 
 YOKUL.Parser.prototype.visibleAxesCount = function Parser_visibleAxesCount(axisName) {
