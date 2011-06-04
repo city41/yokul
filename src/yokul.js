@@ -12,12 +12,13 @@ YOKUL.utility = {
 	},
 
 	min: function utility_min(array) {
+		var min = Number.MAX_VALUE, i;
+
 		if(!array || !array.length) {
 			return undefined;
 		}
 	
-		var min = Number.MAX_VALUE;
-		for(var i = 0; i < array.length; ++i) {
+		for(i = 0; i < array.length; ++i) {
 			if(array[i] < min) {
 				min = array[i];
 			}
@@ -26,12 +27,13 @@ YOKUL.utility = {
 		return min;
 	},
 	max: function utility_max(array) {
+		var max = Number.MIN_VALUE, i;
+
 		if(!array || !array.length) {
 			return undefined;
 		}
 	
-		var max = Number.MIN_VALUE;
-		for(var i = 0; i < array.length; ++i) {
+		for(i = 0; i < array.length; ++i) {
 			if(array[i] > max) {
 				max = array[i];
 			}
@@ -128,21 +130,25 @@ if(typeof CanvasRenderingContext2D.prototype.dashedLine !== 'function') {
     	
     	this.beginPath();
     	this.moveTo(x1, y1);
+
+			if(dashLen === 0) {
+				this.lineTo(x2, y2);
+			} else {
     	
-    	var dX = x2 - x1;
-    	var dY = y2 - y1;
-    	var dashes = Math.floor(Math.sqrt(dX * dX + dY * dY) / dashLen);
-    	var dashX = dX / dashes;
-    	var dashY = dY / dashes;
+    		var dX = x2 - x1;
+    		var dY = y2 - y1;
+    		var dashes = Math.floor(Math.sqrt(dX * dX + dY * dY) / dashLen);
+    		var dashX = dX / dashes;
+    		var dashY = dY / dashes;
     	
-    	var q = 0;
-    	while (q++ < dashes) {
-     	x1 += dashX;
-     	y1 += dashY;
-     	this[q % 2 == 0 ? 'moveTo' : 'lineTo'](x1, y1);
+    		var q = 0;
+    		while (q++ <= dashes) {
+     			x1 += dashX;
+     			y1 += dashY;
+     			this[q % 2 == 0 ? 'moveTo' : 'lineTo'](x1, y1);
+    		}
     	}
-    	this[q % 2 == 0 ? 'moveTo' : 'lineTo'](x2, y2);
-    	
+
     	this.stroke();
     	this.closePath();
 	};

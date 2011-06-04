@@ -1,0 +1,41 @@
+# taken from here: http://www.eahanson.com/code/minify.rake
+
+desc "minify javascript"
+task :minify do
+	index_root = "VerticalBarGrouped"
+  script_names = []
+	new_index = ''
+
+  IO.foreach("../html/#{index_root}.html") do |line|
+    if line =~ /<script.*src="(.*)"/
+      script_names << $1
+    else
+			new_index << line
+		end
+  end
+
+  new_js = ""
+  script_names.each do |script_name|
+    compressor = IO.popen("java -jar yuicompressor-2.4.6.jar --preserve-semi --type js", "w+")
+    compressor.puts IO.read(script_name)
+    compressor.close_write
+    compressed = compressor.gets
+    if (compressed.nil?)
+      puts "Compressing script \"#{script_name}\" returned nil"
+    else
+      new_js += compressed
+    end
+  end
+
+  filename = "../min/yokul.min.js"
+  File.open(filename, "w") { |file| file.write(new_js) }
+  puts "Created #{filename}"
+
+	filename = "../html/#{index_root}.min.html"
+  File.open(filename, "w") do |file|
+    minified_script_tag = "<script type=\"text/javascript\" src=\"../min/yokul.min.js\"></script>"
+    file.write(new_index.gsub("<!-- minify here -->", minified_script_tag))
+  end
+  puts "Created #{filename}"
+	
+end
