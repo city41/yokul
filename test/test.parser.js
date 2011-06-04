@@ -30,12 +30,14 @@ ParserTest.prototype.testReportsDataEncodingTypeCorrectly = function() {
 
 ParserTest.prototype.testParsesChd_t_Correctly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chd=t:_30,-30,50,80,200|4,5,6|-12,4.3,88.8");
-	assertEquals("chd not parsed correctly", [[null, 30, -30, 50, 80, 200], [4, 5, 6], [-12, 4.3, 88.8 ]], p.chartData());
+	assertEquals("chd not parsed correctly", [[null, 30, -30, 50, 80, 200], [4, 5, 6], [-12, 4.3, 88.8 ]], p.chartDataBySeries());
+	assertEquals("chd not being grouped correctly", [[null, 4, -12], [30, 5, 4.3], [-30, 6, 88.8], [50, null, null], [80, null, null], [200, null, null]], p.chartDataGrouped());
 };
 
 ParserTest.prototype.testParsesChd_s_Correctly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chd=s:BTb19_,Mn5tzb");
-	assertEquals("chd not parsed correctly", [[1,19,27,53,61,-1], [12,39,57,45,51,27]], p.chartData());
+	assertEquals("chd not parsed correctly", [[1,19,27,53,61,-1], [12,39,57,45,51,27]], p.chartDataBySeries());
+	assertEquals("chd not being grouped correctly", [[1, 12], [19, 39], [27, 57], [53, 45], [61, 51], [-1, 27]], p.chartDataGrouped());
 };
 
 ParserTest.prototype.testParsesChttCorrectly = function() {

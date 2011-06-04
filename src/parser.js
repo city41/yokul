@@ -98,7 +98,7 @@ YOKUL.Parser = (function() {
 
 			this._dataEncodingType = splitOnColon[0];
 
-			this._chartData = _chd_handlers[this._dataEncodingType](splitOnColon[1]);
+			this._chartDataBySeries = _chd_handlers[this._dataEncodingType](splitOnColon[1]);
 		},
 
 		chtt: function Parser_chtt(value) {
@@ -291,6 +291,30 @@ YOKUL.Parser = (function() {
 	};
 })();
 
+YOKUL.Parser.prototype._groupChartData = function _Parser_groupChartData() {
+	// group count is equal to the longest series
+	var groupCount = Number.MIN_VALUE;
+	var data = this._chartDataBySeries;
+
+	for(var i = 0; i < data.length; i += 1) {
+		if(data[i].length > groupCount) {
+			groupCount = data[i].length;
+		}
+	}
+
+	var groupedData = [];
+
+	for(var i = 0; i < groupCount; i += 1) {
+		var curGroup= [];
+		for(var k = 0; k < data.length; k += 1) {
+			curGroup.push(data[k][i]);
+		}
+		groupedData.push(curGroup);
+	}
+
+	return groupedData;
+};
+
 YOKUL.Parser.prototype.size = function Parser_size() {
 	return this._size;
 };
@@ -303,9 +327,17 @@ YOKUL.Parser.prototype.getDataEncodingType = function Parser_getDataEncodingType
 	return this._dataEncodingType;
 };
 
-YOKUL.Parser.prototype.chartData = function Parser_chartData() {
-	return this._chartData;
+YOKUL.Parser.prototype.chartDataBySeries = function Parser_chartDataBySeries() {
+	return this._chartDataBySeries;
 };
+
+YOKUL.Parser.prototype.chartDataGrouped = function Parser_chartDataGrouped() {
+	if(this._chartDataGrouped === undefined) {
+		this._chartDataGrouped = this._groupChartData();
+	}
+
+	return this._chartDataGrouped;
+}
 
 YOKUL.Parser.prototype.title = function Parser_title() {
 	return this._title;
