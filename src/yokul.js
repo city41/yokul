@@ -1,5 +1,5 @@
 YOKUL = {};
-
+ 
 YOKUL.useContext = function YOKUL_useContext(context, callback) {
 	context.save();
 	callback(context);
@@ -16,7 +16,7 @@ YOKUL.utility = {
 			return undefined;
 		}
 	
-		var min = 99999999999;
+		var min = Number.MAX_VALUE;
 		for(var i = 0; i < array.length; ++i) {
 			if(array[i] < min) {
 				min = array[i];
@@ -30,7 +30,7 @@ YOKUL.utility = {
 			return undefined;
 		}
 	
-		var max = -99999999999;
+		var max = Number.MIN_VALUE;
 		for(var i = 0; i < array.length; ++i) {
 			if(array[i] > max) {
 				max = array[i];
@@ -99,9 +99,51 @@ YOKUL.defaults = {
 	seriesColor: "#ffcc33",
 	verticalAxisLabelMargin: 5.5,
 
+	gridLines: {
+		dashLength: 4,
+		spacingLength: 1
+	},
+
 	seriesRangesByDataEncodingType: {
 		t: { min: 0, max: 100 },  // basic text values chd=t:34,45,98
 		s: { min: 0, max: 61 },		// basic encoding  chd=s:YUw8
 		e: { min: 0, max: 4095 }	// extended encoding chd=d:PoqM
 	}
 };
+
+
+
+// Canvas Context extensions
+// TODO: Should this be in util? probably
+// TODO: this doesn't handle spacing of the dashes yet
+if(typeof CanvasRenderingContext2D.prototype.dashedLine !== 'function') {
+	CanvasRenderingContext2D.prototype.dashedLine = function(x1, y1, x2, y2, dashLen, spacingLen) {
+    	if (typeof dashLen === 'undefined') {
+				dashLen = YOKUL.defaults.gridLines.dashLength;
+			}
+
+			if(typeof spacingLen === 'undefined') {
+				spacingLen = YOKUL.defaults.gridLines.spacingLength;
+			}
+    	
+    	this.beginPath();
+    	this.moveTo(x1, y1);
+    	
+    	var dX = x2 - x1;
+    	var dY = y2 - y1;
+    	var dashes = Math.floor(Math.sqrt(dX * dX + dY * dY) / dashLen);
+    	var dashX = dX / dashes;
+    	var dashY = dY / dashes;
+    	
+    	var q = 0;
+    	while (q++ < dashes) {
+     	x1 += dashX;
+     	y1 += dashY;
+     	this[q % 2 == 0 ? 'moveTo' : 'lineTo'](x1, y1);
+    	}
+    	this[q % 2 == 0 ? 'moveTo' : 'lineTo'](x2, y2);
+    	
+    	this.stroke();
+    	this.closePath();
+	};
+}

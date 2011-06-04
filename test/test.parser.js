@@ -131,3 +131,17 @@ ParserTest.prototype.testParsesChxlCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chxl=1:|Foo|Bar|Buz%20biz|3:|bbb|aaa");
 	assertEquals("chxl not parsed correctly", { axis1: ['Foo', 'Bar', 'Buz biz'], axis3: ['bbb', 'aaa'] }, p.axisLabels());
 };
+
+ParserTest.prototype.testHasGridSpacing = function() {
+	var hasG = new YOKUL.Parser(URL_ROOT + "?chg=4,5");
+	assertTrue("hasGridSpacing, expected true", hasG.hasGridSpacing());
+
+	var noG = new YOKUL.Parser(URL_ROOT + "?cht=bvg");
+	assertFalse("hasGridSpacing expected false", noG.hasGridSpacing());
+};
+
+ParserTest.prototype.testParsesChgBasicCorrectly = function() {
+	var p = new YOKUL.Parser(URL_ROOT + "?chg=12,24");
+	assertEquals("chg not parsed correctly", 12, p.gridSpacing().getXStepSize());
+	assertEquals("chg not parsed correctly", 24, p.gridSpacing().getYStepSize());
+};

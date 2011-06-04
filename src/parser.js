@@ -236,6 +236,11 @@ YOKUL.Parser = (function() {
 			}
 
 			this._axisLabels = axisLabels;
+		},
+
+		chg: function Parser_chg(value) {
+			var split = value.split(',');
+			this._gridSpacing = new YOKUL.GridSpacing(split[0], split[1], split[2], split[3], split[4], split[5]);
 		}
 	};
 
@@ -316,6 +321,14 @@ YOKUL.Parser.prototype.chartSpacing = function Parser_chartSpacing() {
 	}
 
 	return this._chartSpacing;
+};
+
+YOKUL.Parser.prototype.hasGridSpacing = function Parser_hasGridSpacing() {
+	return !!(this._gridSpacing);
+};
+
+YOKUL.Parser.prototype.gridSpacing = function Parser_gridSpacing() {
+	return this._gridSpacing;
 };
 
 YOKUL.Parser.prototype.seriesRanges = function Parser_seriesRanges() {

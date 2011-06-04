@@ -35,6 +35,7 @@ YOKUL.VerticalBarGrouped.prototype._getTitleHeight = function vbg_getTitleHeight
 	
 	var lineHeight = (titleStyle && (titleStyle.size * 1.33)) || YOKUL.defaults.titleHeight;
 
+	// title is an array of strings, one string is one line of the title
 	return lineHeight * title.length;
 };
 
@@ -211,7 +212,7 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 			}
 
 			context.save();
-			context.fillStyle = this._getSeriesColor(i, parser);//seriesColors[i];
+			context.fillStyle = this._getSeriesColor(i, parser);
 			context.fillRect(currentX, barY, barWidth, barHeight);
 			context.restore();
 			currentX += barWidth;
@@ -221,8 +222,28 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 		}
 		currentX += chartSpacing.getBetweenGroups();
 	}
+};
 
+YOKUL.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, measurement, parser) {
+	context.strokeStyle = "gray";
 
+	var gs = parser.gridSpacing();
+	var xWidth = Math.ceil(measurement.w * (gs.getXStepSize() / 100));
+	var yHeight = Math.ceil(measurement.h * (gs.getYStepSize() / 100));
+
+	var curX = measurement.x + xWidth + .5;
+
+	while(curX <= measurement.x + measurement.w) {
+		context.dashedLine(curX, measurement.y + .5, curX, measurement.y + .5 + measurement.h);
+		curX += xWidth;
+	}
+
+	var curY = measurement.y + .5;
+
+	while(curY < measurement.y + measurement.h) {
+		context.dashedLine(measurement.x + .5, curY, measurement.x + measurement.w + .5, curY);
+		curY += yHeight;
+	}
 };
 
 YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
@@ -306,11 +327,7 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 YOKUL.VerticalBarGrouped.prototype._getTitleFont = function vbg_getTitleFont(parser) {
 	var titleStyle = parser.titleStyle();
 
-	if(titleStyle) {
-		return titleStyle.size + "px sans-serif";
-	} else {
-		return YOKUL.defaults.titleFont;
-	}
+	return (titleStyle && titleStyle.size + "px sans-serif") || YOKUL.defaults.titleFont;
 };
 
 YOKUL.VerticalBarGrouped.prototype._getTitleColor = function vbg_getTitleColor(parser) {
@@ -323,8 +340,8 @@ YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, 
 	var title = parser.title();
 
 	if(title) {
-		context.font = this._getTitleFont(parser);// YOKUL.defaults.titleFont;
-		context.fillStyle = this._getTitleColor(parser); //YOKUL.defaults.titleColor;
+		context.font = this._getTitleFont(parser);
+		context.fillStyle = this._getTitleColor(parser);
 
 		var widthBasis = 0;
 
@@ -387,6 +404,13 @@ YOKUL.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGroup
 	var chartAreaMeasure = this._measureChartArea(context, parser);
 
 	var that = this;
+
+	if(parser.hasGridSpacing()) {
+		YOKUL.useContext(context, function(context) {
+			that._drawGrid(context, chartAreaMeasure, parser);
+		});
+	}
+
 	YOKUL.useContext(context, function(context) {
 		that._drawChartArea(context, chartAreaMeasure, parser);
 	});

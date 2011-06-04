@@ -25,7 +25,7 @@ BarSpacingTest.prototype.testConstructsBarSpacingWithOnlyBarWidthSpecified = fun
 BarSpacingTest.prototype.testGetBarWidthWithStaticBarWidth = function() {
 	var b = new YOKUL.BarSpacing(12, 2, 2);
 	assertEquals("getBarWidth returned unexpected result", 12, b.getBarWidth());
-};
+}; 
 
 BarSpacingTest.prototype.testSetsIsAutomaticBarWidthFlag = function() {
 	var b = new YOKUL.BarSpacing('a');
