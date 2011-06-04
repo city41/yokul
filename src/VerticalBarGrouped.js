@@ -227,7 +227,7 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 };
 
 YOKUL.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, measurement, parser) {
-	context.strokeStyle = "gray";
+	context.strokeStyle = "#afafaf";
 
 	var gs = parser.gridSpacing();
 	var xWidth = Math.ceil(measurement.w * (gs.getXStepSize() / 100));
@@ -248,19 +248,48 @@ YOKUL.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, me
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
+YOKUL.VerticalBarGrouped.prototype._drawXAxis = function vbg_drawXAxis(context, measurement, parser) {
+	context.strokeStyle = "gray";
+	context.beginPath();
+	context.moveTo(measurement.x + .5, measurement.y + measurement.h + .5);
+	context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
+	context.closePath();
+	context.stroke();
+}
+
+YOKUL.VerticalBarGrouped.prototype._drawYAxis = function vbg_drawYAxis(context, measurement, parser) {
 	context.strokeStyle = "gray";
 	context.beginPath();
 	context.moveTo(measurement.x + .5, measurement.y + .5);
 	context.lineTo(measurement.x + .5, measurement.y + measurement.h + .5);
-	context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
-	context.moveTo(measurement.x + .5, measurement.y + .5);
 	context.closePath();
 	context.stroke();
+}
+
+YOKUL.VerticalBarGrouped.prototype._drawRAxis = function vbg_drawRAxis(context, measurement, parser) {
+	context.strokeStyle = "gray";
+	context.beginPath();
+	context.moveTo(measurement.x + measurement.w + .5, measurement.y + .5);
+	context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
+	context.closePath();
+	context.stroke();
+}
+
+YOKUL.VerticalBarGrouped.prototype._drawTAxis = function vbg_drawTAxis(context, measurement, parser) {
+	// TODO: this method isn't needed, for the T axis Google just draws the labels not the actual axis
+}
+
+YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
+	var visibleAxes = parser.visibleAxes(), i;
+
+	for(i = 0; i < visibleAxes.length; ++i) {
+		this['_draw' + visibleAxes[i].toUpperCase() + 'Axis'](context, measurement, parser);
+	}
 };
 
 
 YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
+	var that = this;
 	var visibleAxes = parser.visibleAxes();
 
 	var curAxisIndex = 0;
@@ -274,6 +303,10 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 		var widthPerLabel = measurement.w / labels.length;
 		var curX = measurement.x + widthPerLabel / 2;
 		var curY = measurement.y + measurement.h + (labelHeight * (index + 1));
+
+		if(axis === 't') {
+			curY = measurement.y - ((labelHeight * (index + 1)) / 2);
+		}
 
 		for(var l = 0; l < labels.length; ++l) {
 			if(drawTicks) {
@@ -290,12 +323,16 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 		}
 	}
 
-	function drawVerticalLabel(index, labels, drawTicks, offset) {
+	function drawVerticalLabel(index, labels, drawTicks, offset, offsetX) {
 		if(!offset) {
 			offset = 0;
 		}
 
-		var x = YOKUL.defaults.verticalAxisLabelMargin / 2;
+		if(!offsetX) {
+			offsetX = 0;
+		}
+
+		var x = YOKUL.defaults.verticalAxisLabelMargin / 2 + offsetX;
 		var y = measurement.y - offset;
 		var totalHeight = measurement.h;
 		var step = totalHeight / (labels.length - 1);
@@ -310,6 +347,11 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 			}
 
 			var labelWidth = context.measureText(labels[l]).width;
+			
+			if(axis === 'r') {
+				labelWidth = 0;
+			}
+
 			var maxWidth = measurement.x - YOKUL.defaults.verticalAxisLabelMargin - 2;
 			var curX = x + maxWidth - labelWidth;
 			context.fillText(labels[l], curX, y + YOKUL.defaults.axisLabelHeight / 4);
@@ -317,11 +359,22 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 		}
 	}
 
+	function getOffsetX() {
+		if(axis === 'r') {
+			return measurement.w + 12;
+		}
+		return 0;
+	}
+
+	function getOffsetY() {
+		return 0;
+	}
+
 	var drawLabel = (axis === 'x' || axis === 't') ? drawHorizontalLabel : drawVerticalLabel;
 
 	for(var i = 0; i < visibleAxes.length; ++i) {
 		if(visibleAxes[i] === axis) {
-			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser, (axis === 'x' || axis === 'r') ? measurement.w : measurement.h), true);
+			drawLabel(curAxisIndex, this._getAxisLabels(i, axis, parser, (axis === 'x' || axis === 'r') ? measurement.w : measurement.h), axis !== 't', getOffsetY(), getOffsetX());
 		}
 	}
 };
@@ -427,6 +480,14 @@ YOKUL.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGroup
 
 	YOKUL.useContext(context, function(context) {
 		that._drawAxisLabels(context, chartAreaMeasure, parser, 'y');
+	});
+
+	YOKUL.useContext(context, function(context) {
+		that._drawAxisLabels(context, chartAreaMeasure, parser, 'r');
+	});
+
+	YOKUL.useContext(context, function(context) {
+		that._drawAxisLabels(context, chartAreaMeasure, parser, 't');
 	});
 
 	YOKUL.useContext(context, function(context) {
