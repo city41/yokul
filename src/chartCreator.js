@@ -8,7 +8,8 @@
 YOKUL.chartCreator = (function() {
 	_chartConstructors = {
 		bvg: YOKUL.charts.VerticalBarGrouped,
-		bvs: YOKUL.charts.VerticalBarStacked
+		bvs: YOKUL.charts.VerticalBarStacked,
+		bvo: YOKUL.charts.VerticalBarOverlapped
 	};
 
 	// inspect the query data looking for cht, indicating which type of chart is requested

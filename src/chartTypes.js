@@ -2,6 +2,7 @@ YOKUL.chartTypes = {
 	bar : {
 		verticalStacked : 'bvs',
 		verticalGrouped : 'bvg',
+		verticalOverlapped: 'bvo',
 		specific : {
 			automaticFitBarWidth: "automaticFitBarWidth",
 		},
@@ -18,7 +19,8 @@ YOKUL.chartTypes = {
 
 YOKUL.chartTypesMap = {
 	bvs: YOKUL.chartTypes.bar.verticalStacked,
-	bvg: YOKUL.chartTypes.bar.verticalGrouped
+	bvg: YOKUL.chartTypes.bar.verticalGrouped,
+	bvo: YOKUL.chartTypes.bar.verticalOverlapped
 };
 
 

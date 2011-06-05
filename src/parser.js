@@ -75,10 +75,10 @@ YOKUL.Parser = (function() {
 			this._size = { w: parseInt(split[0], 10), h: parseInt(split[1], 10) };
 
 			if(this._size.w > 1000) {
-				YOKUL.log.warning("Width, " + this._size.w + ", is greater than maximum of 1000");
+				YOKUL.log.warning("Width, " + this._size.w + ", is greater than Google's maximum of 1000");
 			}
 			if(this._size.h > 1000) {
-				YOKUL.log.warning("Height, " + this._size.h + ", is greater than maximum of 1000");
+				YOKUL.log.warning("Height, " + this._size.h + ", is greater than Google's maximum of 1000");
 			}
 		},
 
@@ -244,7 +244,7 @@ YOKUL.Parser = (function() {
 		}
 	};
 
-	var _unsupportedParameters = [ 'chem', 'chfd', 'chm', 'chxtc' ];
+	var _unsupportedParameters = [ 'chem', 'chfd', 'chm', 'chxtc', 'chxp' ];
 
 	function _isUnsupported(key) {
 		for(var i = 0; i < _unsupportedParameters.length; ++i) {
