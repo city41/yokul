@@ -2,7 +2,7 @@
 
 desc "minify javascript"
 task :minify do
-	index_root = "VerticalBarGrouped"
+	index_root = "VerticalBar"
   script_names = []
 	new_index = ''
 
