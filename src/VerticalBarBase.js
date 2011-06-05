@@ -292,6 +292,7 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 			context.dashedLine(curX, measurement.y + .5, curX, measurement.y + .5 + measurement.h);
 			curX += xWidth;
 		}
+		context.dashedLine(measurement.x + measurement.w, measurement.y, measurement.x + measurement.w, measurement.y + measurement.h);
 	
 		var curY = measurement.y + .5;
 	

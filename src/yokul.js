@@ -9,7 +9,7 @@ YOKUL.useContext = function YOKUL_useContext(context, callback) {
 
 YOKUL.utility = {
 	getQueryDataFromElement: function utility_getQueryDataFromElement(element) {
-		return element.dataset["src"] || element.dataset["chart-src"];
+		return element.getAttribute("data-src") || element.getAttribute("data-chart-src");
 	},
 
 	min: function utility_min(array) {

@@ -71,9 +71,13 @@ YOKUL.convertAllImages = function YOKUL_convertAllImages() {
 	if(images !== null) {
 		for(var i = 0; i < images.length; ++i) {
 			var image = images[i];
+			
+			if(!image.id) {
+				image.id = "chartImage" + i;
+			}
 
-			if(image && (image.dataset["src"] || image.dataset["chart-src"])) {
-				YOKUL.chartCreator.create(image);
+			if(image && (image.getAttribute("data-src") || image.getAttribute("data-chart-src"))) {
+				YOKUL.chartCreator.create(image.id);
 			}
 		}
 	}
