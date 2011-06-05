@@ -1,13 +1,13 @@
 
-YOKUL.VerticalBarGrouped = function VerticalBarGrouped(queryData) {
+YOKUL.charts.VerticalBarGrouped = function VerticalBarGrouped(queryData) {
 	this._imageData = this._createChartImage(queryData);
 };
 
-YOKUL.VerticalBarGrouped.prototype.imageData = function vbg_imageData() {
+YOKUL.charts.VerticalBarGrouped.prototype.imageData = function vbg_imageData() {
 	return this._imageData;
 };
 
-YOKUL.VerticalBarGrouped.prototype._getChartAreaWidth = function vbg_getChartAreaWidth(parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getChartAreaWidth = function vbg_getChartAreaWidth(parser) {
 	var chartSpacing = parser.chartSpacing();
 
 	if(chartSpacing.isAutomaticBarWidth()) {
@@ -26,7 +26,7 @@ YOKUL.VerticalBarGrouped.prototype._getChartAreaWidth = function vbg_getChartAre
 	return data.length * groupWidth;
 };
 
-YOKUL.VerticalBarGrouped.prototype._getTitleHeight = function vbg_getTitleHeight(parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getTitleHeight = function vbg_getTitleHeight(parser) {
 	var title = parser.title();
 
 	if(!title) {
@@ -41,7 +41,7 @@ YOKUL.VerticalBarGrouped.prototype._getTitleHeight = function vbg_getTitleHeight
 	return lineHeight * title.length;
 };
 
-YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChartArea(context, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChartArea(context, parser) {
 	var chartAreaWidth = this._getChartAreaWidth(parser);
 
 	var measure = { x: 0, y: 0, w: chartAreaWidth, h: parser.size().h };
@@ -109,7 +109,7 @@ YOKUL.VerticalBarGrouped.prototype._measureChartArea = function vbg_measureChart
 	return measure;
 };
 
-YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser, span) {
+YOKUL.charts.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(index, axisName, parser, span) {
 	var allAxisLabels = parser.axisLabels();
 
 	var axisLabels = null;
@@ -148,7 +148,7 @@ YOKUL.VerticalBarGrouped.prototype._getAxisLabels = function vbg_getAxisLabels(i
 };
 
 
-YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange(index, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange(index, parser) {
 	var specifiedRanges = parser.seriesRanges();
 
 	if(specifiedRanges && specifiedRanges[index]) {
@@ -162,7 +162,7 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesRange = function vbg_getSeriesRange
 	return YOKUL.defaults.seriesRangesByDataEncodingType[parser.getDataEncodingType()];
 };
 
-YOKUL.VerticalBarGrouped.prototype._getAxisRange = function vbg_getAxisRange(index, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getAxisRange = function vbg_getAxisRange(index, parser) {
 	var axisRanges = parser.axisRanges();
 
 	if(axisRanges && axisRanges[index]) {
@@ -173,7 +173,7 @@ YOKUL.VerticalBarGrouped.prototype._getAxisRange = function vbg_getAxisRange(ind
 	return YOKUL.defaults.seriesRangesByDataEncodingType[parser.getDataEncodingType()];
 };
 
-YOKUL.VerticalBarGrouped.prototype._getSeriesColor = function vbg_getSeriesColor(index, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getSeriesColor = function vbg_getSeriesColor(index, parser) {
 	var seriesColors = parser.seriesColors();
 
 	if(seriesColors && seriesColors[index]) {
@@ -187,7 +187,7 @@ YOKUL.VerticalBarGrouped.prototype._getSeriesColor = function vbg_getSeriesColor
 	return YOKUL.defaults.seriesColor;
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(context, measurement, parser) {
 	var chartSpacing = parser.chartSpacing();
 	var dataBySeries = parser.chartDataBySeries();
 	var data = parser.chartDataGrouped();
@@ -226,7 +226,7 @@ YOKUL.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChartArea(c
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, measurement, parser) {
 	context.strokeStyle = "#afafaf";
 
 	var gs = parser.gridSpacing();
@@ -248,7 +248,7 @@ YOKUL.VerticalBarGrouped.prototype._drawGrid = function vbg_drawGrid(context, me
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawXAxis = function vbg_drawXAxis(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawXAxis = function vbg_drawXAxis(context, measurement, parser) {
 	context.strokeStyle = "gray";
 	context.beginPath();
 	context.moveTo(measurement.x + .5, measurement.y + measurement.h + .5);
@@ -257,7 +257,7 @@ YOKUL.VerticalBarGrouped.prototype._drawXAxis = function vbg_drawXAxis(context, 
 	context.stroke();
 }
 
-YOKUL.VerticalBarGrouped.prototype._drawYAxis = function vbg_drawYAxis(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawYAxis = function vbg_drawYAxis(context, measurement, parser) {
 	context.strokeStyle = "gray";
 	context.beginPath();
 	context.moveTo(measurement.x + .5, measurement.y + .5);
@@ -266,7 +266,7 @@ YOKUL.VerticalBarGrouped.prototype._drawYAxis = function vbg_drawYAxis(context, 
 	context.stroke();
 }
 
-YOKUL.VerticalBarGrouped.prototype._drawRAxis = function vbg_drawRAxis(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawRAxis = function vbg_drawRAxis(context, measurement, parser) {
 	context.strokeStyle = "gray";
 	context.beginPath();
 	context.moveTo(measurement.x + measurement.w + .5, measurement.y + .5);
@@ -275,12 +275,20 @@ YOKUL.VerticalBarGrouped.prototype._drawRAxis = function vbg_drawRAxis(context, 
 	context.stroke();
 }
 
-YOKUL.VerticalBarGrouped.prototype._drawTAxis = function vbg_drawTAxis(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawTAxis = function vbg_drawTAxis(context, measurement, parser) {
 	// TODO: this method isn't needed, for the T axis Google just draws the labels not the actual axis
 }
 
-YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
-	var visibleAxes = parser.visibleAxes(), i;
+YOKUL.charts.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, measurement, parser) {
+	var visibleAxes = parser.visibleAxes().clone(), i;
+
+	if(!visibleAxes.contains('x')) {
+		visibleAxes.push('x');
+	}
+
+	if(!visibleAxes.contains('y')) {
+		visibleAxes.push('y');
+	}
 
 	for(i = 0; i < visibleAxes.length; ++i) {
 		this['_draw' + visibleAxes[i].toUpperCase() + 'Axis'](context, measurement, parser);
@@ -288,7 +296,7 @@ YOKUL.VerticalBarGrouped.prototype._drawAxes = function vbg_drawAxes(context, me
 };
 
 
-YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels(context, measurement, parser, axis) {
 	var that = this;
 	var visibleAxes = parser.visibleAxes();
 
@@ -379,19 +387,19 @@ YOKUL.VerticalBarGrouped.prototype._drawAxisLabels = function vbg_drawAxisLabels
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._getTitleFont = function vbg_getTitleFont(parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getTitleFont = function vbg_getTitleFont(parser) {
 	var titleStyle = parser.titleStyle();
 
 	return (titleStyle && titleStyle.size + "px sans-serif") || YOKUL.defaults.titleFont;
 };
 
-YOKUL.VerticalBarGrouped.prototype._getTitleColor = function vbg_getTitleColor(parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._getTitleColor = function vbg_getTitleColor(parser) {
 	var titleStyle = parser.titleStyle();
 
 	return (titleStyle && titleStyle.color) || YOKUL.defaults.titleColor;
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, measurement, parser) {
 	var title = parser.title();
 
 	if(title) {
@@ -422,7 +430,7 @@ YOKUL.VerticalBarGrouped.prototype._drawTitle = function vbg_drawTitle(context, 
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._drawLegend = function vbg_drawLegend(context, measurement, parser) {
+YOKUL.charts.VerticalBarGrouped.prototype._drawLegend = function vbg_drawLegend(context, measurement, parser) {
 	var spacing = 6;
 	var entryHeight = 12;
 	var legendLabels = parser.legendLabels();
@@ -443,7 +451,7 @@ YOKUL.VerticalBarGrouped.prototype._drawLegend = function vbg_drawLegend(context
 	}
 };
 
-YOKUL.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGrouped_createChartImage(query) {
+YOKUL.charts.VerticalBarGrouped.prototype._createChartImage = function VerticalBarGrouped_createChartImage(query) {
 	var parser = new YOKUL.Parser(query);
 
 	var canvas = document.createElement('canvas');

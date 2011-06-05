@@ -1,4 +1,5 @@
 YOKUL = {};
+YOKUL.charts = {};
  
 YOKUL.useContext = function YOKUL_useContext(context, callback) {
 	context.save();
@@ -151,5 +152,30 @@ if(typeof CanvasRenderingContext2D.prototype.dashedLine !== 'function') {
 
     	this.stroke();
     	this.closePath();
+	};
+}
+
+if(typeof Array.prototype.clone !== 'function') {
+	Array.prototype.clone = function Array_clone() {
+		var other = [], i, l = this.length;
+
+		for(i = 0; i < l; ++i) {
+			other.push(this[i]);
+		}
+
+		return other;
+	};
+}
+
+if(typeof Array.prototype.contains !== 'function') {
+	Array.prototype.contains = function Array_contains(val) {
+		var i = 0, l =  this.length;
+
+		for(; i < l; ++i) {
+			if(this[i] === val) {
+				return true;
+			}
+		}
+		return false;
 	};
 }
