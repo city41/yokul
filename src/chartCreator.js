@@ -7,7 +7,8 @@
 
 YOKUL.chartCreator = (function() {
 	_chartConstructors = {
-		bvg: YOKUL.charts.VerticalBarGrouped
+		bvg: YOKUL.charts.VerticalBarGrouped,
+		bvs: YOKUL.charts.VerticalBarStacked
 	};
 
 	// inspect the query data looking for cht, indicating which type of chart is requested
