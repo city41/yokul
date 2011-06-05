@@ -65,3 +65,17 @@ YOKUL.chartCreator = (function() {
 	};
 })();
 
+YOKUL.convertAllImages = function YOKUL_convertAllImages() {
+	var images = document.getElementsByTagName("img");
+
+	if(images !== null) {
+		for(var i = 0; i < images.length; ++i) {
+			var image = images[i];
+
+			if(image && (image.dataset["src"] || image.dataset["chart-src"])) {
+				YOKUL.chartCreator.create(image);
+			}
+		}
+	}
+};
+
