@@ -1,10 +1,16 @@
 # Yokul -- Google Charts Done Locally #
-This file last update: Apr 18th, 2011
+This file last update: June 5th, 2011
 
 Yokul is an experiment to see if a local, HTML5 Canvas based, implementation of the Google Charts API can be useful or advantageous. It's early in Yokul's development but I think the answer is already "yes".
 
 ## How It Works ##
 Yokul reads the same query string you'd normally send to Google Charts. It then creates the same chart that Google would have, except does it locally on the client's machine using an HTML5 Canvas.
+
+## Sample Pages ##
+
+My website has an intro page that is pretty much the same info as this readme -- http://www.mattgreer.org/post/1yokulIntro
+  
+A sample page of various charts with the ability to manipulate the queries can be seen here -- http://www.mattgreer.org/VerticalBar.min.html
 
 ## Advantages ##
 * **Easy to Learn:** If you already know the Google Chart API, then you know Yokul too.
@@ -26,18 +32,25 @@ Yokul reads the same query string you'd normally send to Google Charts. It then 
 * **Playing catch up:** If/when Google changes the chart API, Yokul will be forced to play catch up. If you need truly cutting edge Google charting, then it be better to stick with the real deal.
 
 ## Compatibility ##
-As of this writing Yokul is very young and nowhere near ready for primetime. So far only bvg (bar vertical grouped) charts are supported, and only a subset of features at that. The overall goal is to support all "normal" chart types in their entirety: all bar, line, pie, scatter, etc type charts. Yokul has no intention of supporting QR codes, maps, radar charts, etc. However who knows, that may change in the future.
+As of this writing Yokul is very young and nowhere near ready for primetime. So far only vertical bar charts are supported (bvg, bvs, bvo in Google Chart terminology), and only a subset of features at that. The overall goal is to support all "normal" chart types in their entirety: all bar, line, pie, scatter, etc type charts. Yokul has no intention of supporting QR codes, maps, radar charts, etc. However who knows, that may change in the future.
 
 ## Not a true drop in ##
 When a browser encounters an image that has its src attribute specified, it immediately fires off a connection to go and grab that source. I know of no way to prevent this (if you do, please contact me). Therefore, you can't simply reference Yokul and have all your charts magically become local. Instead you must get rid of the src attribute, and provide the query string in another fashion (such as an HTML5 data attribute). Yes, this is a significant limitation, but not significant enough to stop Yokul in its tracks in my humble opinion.
 
+## Quick Start ##
+
+* add a reference to [yokul.min.js](https://github.com/city41/yokul/raw/master/min/yokul.min.js) to your page
+* change all of your Google image src attributes to data-src attributes
+* call YOKUL.convertAllImages()
+  
+This page has more info on how to see debug output and some other things -- http://www.mattgreer.org/post/1yokulIntro  
+
 ## Roadmap ##
 Here are my plans for Yokul development:  
   
-* Get bvg (bar vertical group) charts 100% implemented. About, ohhhhh, 60% of the way there as of this writing.
-* Extend support for all other bar chart types: grouped, stacked, overlapped, horizontal, vertical
+* Get vertical bar charts 100% implemented. About, ohhhhh, 75% of the way there as of this writing.
 * From there extend support for pie, line and scatter charts
-* Once Yokul is mature enough, start offering true releases with minimized JavaScript
+* Implement a small "reflection" API that lets Yokul tell you what chart types and parameters it has implemented so far
 * Offer the ability to only pull in the pieces of Yokul you need to minimize the script even more (for example, leave out pie charts if you have no need for them)
 * Demos, documentation, all that good stuff. Soon!
 
