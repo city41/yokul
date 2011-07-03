@@ -25,12 +25,14 @@ YOKUL.charts.VerticalBarOverlapped.prototype._getChartAreaWidth = function vbo_g
 YOKUL.charts.VerticalBarOverlapped.prototype._sortDataByHeight = function vbo_sortDataByHeight(data) {
 	var sorted = [];
 
+	function sortFunc(a,b) {
+		return b - a;
+	}
+
 	for(var i = 0; i < data.length; ++i) {
 		var clone = data[i].clone();
 
-		clone.sort(function(a,b) {
-			return b - a;
-		});
+		clone.sort(sortFunc);
 
 		sorted.push(clone);
 	}

@@ -25,7 +25,7 @@ YOKUL.Tokenizer.prototype._tokenize = function Tokenizer_tokenize(input) {
 	var params = input.split("&");
 
 	for(var i = 0; i < params.length; ++i) {
-		var param = params[i]
+		var param = params[i];
 
 		if(!param || param.length === 0 || param.match(/^[ \t]$/)) {
 			continue;

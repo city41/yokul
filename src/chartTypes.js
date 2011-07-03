@@ -4,7 +4,7 @@ YOKUL.chartTypes = {
 		verticalGrouped : 'bvg',
 		verticalOverlapped: 'bvo',
 		specific : {
-			automaticFitBarWidth: "automaticFitBarWidth",
+			automaticFitBarWidth: "automaticFitBarWidth"
 		},
 		defaults: {
 			barWidth: 23,

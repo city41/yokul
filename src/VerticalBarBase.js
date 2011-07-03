@@ -99,9 +99,7 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 	}
 
 	function vbmi_getAxisLabels(index, axisName, parser, span) {
-		var allAxisLabels = parser.axisLabels();
-	
-		var axisLabels = null;
+		var allAxisLabels = parser.axisLabels(), axisLabels = null, i;
 		
 	
 		if(allAxisLabels && allAxisLabels['axis' + index]) {
@@ -116,10 +114,10 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 			var firstLabel = axisRange.min;
 
 			while(firstLabel % spacing !== 0) {
-				++firstLabel;
+				firstLabel += 1;
 			}
 	
-			for(var i = 0; i <= labelCount; ++i) {
+			for(i = 0; i <= labelCount; ++i) {
 				axisLabels.push(Math.round(firstLabel).toString());
 				firstLabel += spacing;
 			}
@@ -128,7 +126,7 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 		else {
 			var dataCount = parser.chartDataBySeries()[0].length;
 			axisLabels = [];
-			for(var i = 0; i < dataCount; ++i) {
+			for(i = 0; i < dataCount; ++i) {
 				axisLabels.push(i.toString());
 			}
 		}
@@ -157,7 +155,7 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 		for(i = 0; i < visibleAxes.length; ++i) {
 			drawAxisFunctions['draw' + visibleAxes[i].toUpperCase() + 'Axis'](context, measurement, parser);
 		}
-	};
+	}
 
 	function vbmi_drawAxisLabels(context, measurement, parser, axis) {
 		var that = this;
@@ -211,8 +209,8 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 			for(var l = labels.length - 1; l >= 0; --l) {
 				if(drawTicks) {
 					context.beginPath();
-					context.moveTo(measurement.x + .5, y + .5);
-					context.lineTo(measurement.x - 3 + .5, y + .5);
+					context.moveTo(measurement.x + 0.5, y + 0.5);
+					context.lineTo(measurement.x - 3 + 0.5, y + 0.5);
 					context.closePath();
 					context.stroke();
 				}
@@ -286,18 +284,18 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 		var xWidth = Math.ceil(measurement.w * (gs.getXStepSize() / 100));
 		var yHeight = Math.ceil(measurement.h * (gs.getYStepSize() / 100));
 	
-		var curX = measurement.x + xWidth + .5;
+		var curX = measurement.x + xWidth + 0.5;
 	
 		while(curX <= measurement.x + measurement.w) {
-			context.dashedLine(curX, measurement.y + .5, curX, measurement.y + .5 + measurement.h);
+			context.dashedLine(curX, measurement.y + 0.5, curX, measurement.y + 0.5 + measurement.h);
 			curX += xWidth;
 		}
 		context.dashedLine(measurement.x + measurement.w, measurement.y, measurement.x + measurement.w, measurement.y + measurement.h);
 	
-		var curY = measurement.y + .5;
+		var curY = measurement.y + 0.5;
 	
 		while(curY < measurement.y + measurement.h) {
-			context.dashedLine(measurement.x + .5, curY, measurement.x + measurement.w + .5, curY);
+			context.dashedLine(measurement.x + 0.5, curY, measurement.x + measurement.w + 0.5, curY);
 			curY += yHeight;
 		}
 	}
@@ -305,8 +303,8 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 	function vbmi_drawXAxis(context, measurement, parser) {
 		context.strokeStyle = "gray";
 		context.beginPath();
-		context.moveTo(measurement.x + .5, measurement.y + measurement.h + .5);
-		context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
+		context.moveTo(measurement.x + 0.5, measurement.y + measurement.h + 0.5);
+		context.lineTo(measurement.x + measurement.w + 0.5, measurement.y + measurement.h + 0.5);
 		context.closePath();
 		context.stroke();
 	}
@@ -314,8 +312,8 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 	function vbmi_drawYAxis(context, measurement, parser) {
 		context.strokeStyle = "gray";
 		context.beginPath();
-		context.moveTo(measurement.x + .5, measurement.y + .5);
-		context.lineTo(measurement.x + .5, measurement.y + measurement.h + .5);
+		context.moveTo(measurement.x + 0.5, measurement.y + 0.5);
+		context.lineTo(measurement.x + 0.5, measurement.y + measurement.h + 0.5);
 		context.closePath();
 		context.stroke();
 	}
@@ -323,8 +321,8 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 	function vbmi_drawRAxis(context, measurement, parser) {
 		context.strokeStyle = "gray";
 		context.beginPath();
-		context.moveTo(measurement.x + measurement.w + .5, measurement.y + .5);
-		context.lineTo(measurement.x + measurement.w + .5, measurement.y + measurement.h + .5);
+		context.moveTo(measurement.x + measurement.w + 0.5, measurement.y + 0.5);
+		context.lineTo(measurement.x + measurement.w + 0.5, measurement.y + measurement.h + 0.5);
 		context.closePath();
 		context.stroke();
 	}
@@ -463,7 +461,7 @@ YOKUL.charts._VerticalBarMixin = (function _VerticalBarMixin() {
 		this._createChartImageCore = vbmi_createChartImageCore;
 
 		this.imageData = vbmi_imageData;
-	}
+	};
 })();
 
 

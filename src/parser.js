@@ -280,7 +280,7 @@ YOKUL.Parser = (function() {
 				}
 			}
 		}
-	}
+	};
 
 	return function Parser(input) {
 		if(input === undefined || input === null || input.length === 0) {
@@ -337,7 +337,7 @@ YOKUL.Parser.prototype.chartDataGrouped = function Parser_chartDataGrouped() {
 	}
 
 	return this._chartDataGrouped;
-}
+};
 
 YOKUL.Parser.prototype.title = function Parser_title() {
 	return this._title;
@@ -405,4 +405,4 @@ YOKUL.Parser.prototype.axisLabels = function Parser_axisLabels() {
 
 YOKUL.Parser.prototype.legendSpecified = function Parser_legendSpecified() {
 	return !!(this._legendLabels);
-}
+};
