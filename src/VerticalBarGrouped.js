@@ -11,7 +11,7 @@ YOKUL.charts.VerticalBarGrouped.prototype._getChartAreaWidth = function vbg_getC
 	if(chartSpacing.isAutomaticBarWidth()) {
 		return parser.size().w;
 	}
-	
+
 	var data = parser.chartDataGrouped();
 
 	var barWidth = chartSpacing.getBarWidth();
@@ -53,7 +53,7 @@ YOKUL.charts.VerticalBarGrouped.prototype._drawChartArea = function vbg_drawChar
 
 			context.fillStyle = this._getSeriesColor(i, parser);
 			context.fillRect(currentX, barY, barWidth, barHeight);
-			
+
 			currentX += barWidth + chartSpacing.getBetweenBars();
 		}
 	}
@@ -65,12 +65,12 @@ YOKUL.charts.VerticalBarGrouped.prototype._createChartImage = function VerticalB
 	var canvas = document.createElement('canvas');
 	canvas.width = parser.size().w;
 	canvas.height = parser.size().h;
-	
+
 	var context = canvas.getContext('2d');
 	var chartAreaMeasure = this._measureChartArea(context, parser);
-	
+
 	this._createChartImageCore(query, parser, context, chartAreaMeasure);
-	
+
 	return canvas.toDataURL('image/png');
 };
 

@@ -37,5 +37,5 @@ task :minify do
     file.write(new_index.gsub("<!-- minify here -->", minified_script_tag))
   end
   puts "Created #{filename}"
-	
+
 end

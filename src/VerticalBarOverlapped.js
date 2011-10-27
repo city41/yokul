@@ -11,7 +11,7 @@ YOKUL.charts.VerticalBarOverlapped.prototype._getChartAreaWidth = function vbo_g
 	if(chartSpacing.isAutomaticBarWidth()) {
 		return parser.size().w;
 	}
-	
+
 	var data = parser.chartDataGrouped();
 
 	var barWidth = chartSpacing.getBarWidth();
@@ -88,12 +88,12 @@ YOKUL.charts.VerticalBarOverlapped.prototype._createChartImage = function vbo_cr
 	var canvas = document.createElement('canvas');
 	canvas.width = parser.size().w;
 	canvas.height = parser.size().h;
-	
+
 	var context = canvas.getContext('2d');
 	var chartAreaMeasure = this._measureChartArea(context, parser);
-	
+
 	this._createChartImageCore(query, parser, context, chartAreaMeasure);
-	
+
 	return canvas.toDataURL('image/png');
 };
 

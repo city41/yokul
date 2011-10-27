@@ -9,7 +9,7 @@ Yokul reads the same query string you'd normally send to Google Charts. It then 
 ## Sample Pages ##
 
 My website has an intro page that is pretty much the same info as this readme -- http://www.mattgreer.org/post/1yokulIntro
-  
+
 A sample page of various charts with the ability to manipulate the queries can be seen here -- http://www.mattgreer.org/VerticalBar.min.html
 
 ## Advantages ##
@@ -42,12 +42,12 @@ When a browser encounters an image that has its src attribute specified, it imme
 * add a reference to [yokul.min.js](https://github.com/city41/yokul/raw/master/min/yokul.min.js) to your page
 * change all of your Google image src attributes to data-src attributes
 * call YOKUL.convertAllImages()
-  
-This page has more info on how to see debug output and some other things -- http://www.mattgreer.org/post/1yokulIntro  
+
+This page has more info on how to see debug output and some other things -- http://www.mattgreer.org/post/1yokulIntro
 
 ## Roadmap ##
-Here are my plans for Yokul development:  
-  
+Here are my plans for Yokul development:
+
 * Get vertical bar charts 100% implemented. About, ohhhhh, 75% of the way there as of this writing.
 * From there extend support for pie, line and scatter charts
 * Implement a small "reflection" API that lets Yokul tell you what chart types and parameters it has implemented so far
