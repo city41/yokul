@@ -1,23 +1,23 @@
 YOKUL.BarSpacing = function BarSpacing(barWidth, betweenBars, betweenGroups) {
 	this._barWidth = barWidth || YOKUL.chartTypes.bar.defaults.barWidth;
- 
+
 	if(this._barWidth === 'a' && betweenBars === undefined) {
 		this._betweenBars = 3;
 	} else {
 		this._betweenBars = (betweenBars === undefined) ? YOKUL.chartTypes.bar.defaults.betweenBarWidth : betweenBars;
 	}
- 
+
 	if(this._barWidth === 'a' && betweenGroups === undefined) {
 		this._betweenGroups = 3;
 	} else {
 		this._betweenGroups = (betweenGroups === undefined) ?  YOKUL.chartTypes.bar.defaults.betweenGroupWidth : betweenGroups;
 	}
-}; 
+};
 
 YOKUL.BarSpacing.prototype.getBarWidth = function BarSpacing_getBarWidth(numBars, numGroups, availableWidth) {
 	if(this._barWidth !== 'a') {
 		return this._barWidth;
-	} else {	
+	} else {
 		if(typeof numBars === 'undefined' || typeof availableWidth === 'undefined') {
 			throw new Error("BarSpacing.getBarWidth: barWidth is set to automatic, so please provude numBars and availableWidth parameters");
 		}

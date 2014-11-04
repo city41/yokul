@@ -5,13 +5,13 @@ YOKUL.Parser = (function() {
 
 			function parseOneSet(set) {
 				set = set.replace(/_/g, ",null,");
-				
+
 				var data = [];
 				var _split = set.split(',');
-	
+
 				for(var i = 0; i < _split.length; ++i){
 					var s = _split[i];
-	
+
 					if(s !== undefined && s !== '') {
 						if(s === 'null') {
 							data.push(null);
@@ -31,7 +31,7 @@ YOKUL.Parser = (function() {
 				allData.push(parseOneSet(split[i]));
 			}
 
-			return allData; 
+			return allData;
 		},
 		s: function Parser_chd_t(value) {
 			function decode(c) {
@@ -71,7 +71,7 @@ YOKUL.Parser = (function() {
 			if(split.length !== 2) {
 				throw new Error("Parser:chs: unexpected input: " + value);
 			}
-	
+
 			this._size = { w: parseInt(split[0], 10), h: parseInt(split[1], 10) };
 
 			if(this._size.w > 1000) {
@@ -191,7 +191,7 @@ YOKUL.Parser = (function() {
 		},
 
 		chxt: function Parser_chxt(value) {
-			this._visibleAxes = value.split(','); 
+			this._visibleAxes = value.split(',');
 		},
 
 		chxr: function Parser_chxr(value) {
@@ -203,7 +203,7 @@ YOKUL.Parser = (function() {
 				var vals = split[i].split(',');
 				var index = parseInt(vals[0], 10);
 				vals = vals.splice(1);
-		
+
 				var range = [];
 				for(var k = 0; k < vals.length; ++k) {
 					range.push(parseFloat(vals[k]));
@@ -220,7 +220,7 @@ YOKUL.Parser = (function() {
 
 			var axisLabels = {};
 			var currentAxis = null;
-			
+
 			for(var i = 0; i < split.length; ++i) {
 				var value = split[i];
 				if(value.indexOf(':') > -1) {
@@ -262,14 +262,14 @@ YOKUL.Parser = (function() {
 		while(tokenizer.moveNext()) {
 			var token = tokenizer.current();
 			YOKUL.log.info("token-> " + token.key);
-	
+
 			if(_isUnsupported(token.key)) {
 				YOKUL.log.warning(token.key + ": not currently supported, skipping");
 				continue;
 			}
 
 			var handler = _handlers[token.key];
-	
+
 			if(handler === undefined) {
 				YOKUL.log.error("unknown token encountered: " + token.key);
 			} else {
@@ -286,7 +286,7 @@ YOKUL.Parser = (function() {
 		if(input === undefined || input === null || input.length === 0) {
 			throw new Error("Parser: given no input to parse");
 		}
-	
+
 		_parse.call(this, input);
 	};
 })();

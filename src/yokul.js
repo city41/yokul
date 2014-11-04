@@ -1,6 +1,6 @@
 YOKUL = {};
 YOKUL.charts = {};
- 
+
 YOKUL.useContext = function YOKUL_useContext(context, callback) {
 	context.save();
 	callback(context);
@@ -18,7 +18,7 @@ YOKUL.utility = {
 		if(!array || !array.length) {
 			return undefined;
 		}
-	
+
 		for(i = 0; i < array.length; ++i) {
 			if(array[i] < min) {
 				min = array[i];
@@ -33,7 +33,7 @@ YOKUL.utility = {
 		if(!array || !array.length) {
 			return undefined;
 		}
-	
+
 		for(i = 0; i < array.length; ++i) {
 			if(array[i] > max) {
 				max = array[i];
@@ -128,20 +128,20 @@ if(typeof CanvasRenderingContext2D.prototype.dashedLine !== 'function') {
 			if(typeof spacingLen === 'undefined') {
 				spacingLen = YOKUL.defaults.gridLines.spacingLength;
 			}
-    	
+
     	this.beginPath();
     	this.moveTo(x1, y1);
 
 			if(dashLen === 0) {
 				this.lineTo(x2, y2);
 			} else {
-    	
+
     		var dX = x2 - x1;
     		var dY = y2 - y1;
     		var dashes = Math.floor(Math.sqrt(dX * dX + dY * dY) / dashLen);
     		var dashX = dX / dashes;
     		var dashY = dY / dashes;
-    	
+
     		var q = 0;
     		while (q++ <= dashes) {
      			x1 += dashX;

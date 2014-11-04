@@ -4,7 +4,7 @@ YOKUL.Tokenizer = function Tokenizer(rawString) {
 	if(rawString === undefined || rawString === null || rawString.length === 0) {
 		throw new Error("Tokenizer: constructed without any input");
 	}
-	
+
 	// move past the server and /chart if it exists, just grab the query data
 	var match = /^[^?]+\?(.+)$/.exec(rawString);
 

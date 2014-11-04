@@ -7,7 +7,7 @@ ParserTest.prototype.testThrowsExceptionIfNoInputProvided = function() {
 		new YOKUL.Parser();
 	});
 };
- 
+
 ParserTest.prototype.testParsesChsCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chs=123x456");
 	assertEquals("chs not parsed correctly", { w: 123, h: 456 }, p.size());
@@ -43,7 +43,7 @@ ParserTest.prototype.testParsesChd_s_Correctly = function() {
 ParserTest.prototype.testParsesChttCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle");
 	assertEquals("chtt not parsed correctly", ['mytitle'], p.title());
-	
+
 	var p = new YOKUL.Parser(URL_ROOT + "?chtt=mytitle+with+spaces+in+it");
 	assertEquals("chtt not parsed correctly", ['mytitle with spaces in it'], p.title());
 
@@ -93,7 +93,7 @@ ParserTest.prototype.testCreatesDefaultBarSpacingIfChbhIsNotPresent = function()
 
 ParserTest.prototype.testParsesChdsCorrectly = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chds=-40.4,110.88,-1.3,2.5");
-	assertEquals("chds not parsed correctly", [{ min: -40.4, max: 110.88 }, { min: -1.3, max: 2.5 }], p.seriesRanges()); 
+	assertEquals("chds not parsed correctly", [{ min: -40.4, max: 110.88 }, { min: -1.3, max: 2.5 }], p.seriesRanges());
 };
 
 ParserTest.prototype.testParsesChdlCorrectly = function() {
@@ -124,7 +124,7 @@ ParserTest.prototype.testCreatesDefaultVisibleAxesIfChxtNotPresent = function() 
 ParserTest.prototype.testVisibleAxesCount = function() {
 	var p = new YOKUL.Parser(URL_ROOT + "?chxt=x,x,y,x,y,t,t");
 	assertEquals("visible axes count not expected for x", 3, p.visibleAxesCount('x'));
-	assertEquals("visible axes count not expected for y", 2, p.visibleAxesCount('y')); 
+	assertEquals("visible axes count not expected for y", 2, p.visibleAxesCount('y'));
 	assertEquals("visible axes count not expected for unknown axis name", 0, p.visibleAxesCount('k'));
 
 };

@@ -2,7 +2,7 @@
 // YOKUL chartCreator
 //
 // This is an object that is responsible for creating a chart.
-// It inspects the incoming query data to determine the type of chart 
+// It inspects the incoming query data to determine the type of chart
 // requested, and from there creates the proper type of chart object
 
 YOKUL.chartCreator = (function() {
@@ -22,7 +22,7 @@ YOKUL.chartCreator = (function() {
 
 	function _createChart(queryData) {
 		var chartType = _getChartType(queryData);
-		
+
 		var Constructor = _chartConstructors[chartType];
 
 		if(Constructor) {
@@ -71,7 +71,7 @@ YOKUL.convertAllImages = function YOKUL_convertAllImages() {
 	if(images !== null) {
 		for(var i = 0; i < images.length; ++i) {
 			var image = images[i];
-			
+
 			if(!image.id) {
 				image.id = "chartImage" + i;
 			}
